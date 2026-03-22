@@ -1,0 +1,208 @@
+/* =============================================
+   HERO — Clean, modern hero section
+   ============================================= */
+
+.main-content {
+    margin-left: var(--sidebar-width);
+    min-height: 100vh;
+}
+
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: clamp(2rem, 4vw, 6rem) clamp(1.5rem, 3vw, 5rem);
+    overflow: hidden;
+}
+
+/* Subtle background shapes — reduced from 5 to 2 */
+.hero-bg-shapes {
+    position: absolute; inset: 0;
+    pointer-events: none; overflow: hidden;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+}
+
+.shape-1 {
+    width: 500px; height: 500px;
+    background: rgba(96, 165, 250, 0.08);
+    top: -100px; right: -50px;
+    animation: float 15s ease-in-out infinite;
+}
+
+.shape-2 {
+    width: 400px; height: 400px;
+    background: rgba(167, 139, 250, 0.06);
+    bottom: -50px; left: -50px;
+    animation: float 18s ease-in-out infinite reverse;
+}
+
+.shape-3, .shape-4, .shape-5 {
+    display: none; /* Hide extra shapes for cleaner look */
+}
+
+/* Hero Content */
+.hero-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: clamp(3rem, 5vw, 7rem);
+    max-width: min(1200px, 90vw);
+    width: 100%;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+.hero-text { flex: 1; }
+
+.hero-greeting {
+    font-size: clamp(0.85rem, 0.9vw + 0.3rem, 1.1rem);
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.hero-name {
+    font-size: clamp(2rem, 4vw + 0.5rem, 4.5rem);
+    font-weight: 800;
+    line-height: 1.08;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+}
+
+.hero-title-wrapper {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 1.75rem;
+}
+
+.hero-title-prefix {
+    display: none; /* Remove emoji prefix */
+}
+
+.typed-text {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.cursor {
+    animation: blink 1s step-end infinite;
+    color: var(--accent);
+    font-weight: 300;
+    opacity: 0.6;
+}
+
+/* Hero Tags */
+.hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.5rem;
+}
+
+.hero-tags span {
+    background: var(--bg-tertiary);
+    padding: 0.4rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    transition: all 0.25s ease;
+    font-weight: 500;
+}
+
+.hero-tags span:hover {
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+    background: var(--bg-card-hover);
+}
+
+.hero-tags a { text-decoration: none; color: inherit; }
+.hero-tags a span { cursor: pointer; }
+
+/* Hero Stats */
+.hero-stats {
+    display: flex;
+    gap: 0;
+    margin-bottom: 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--bg-card);
+    width: fit-content;
+}
+
+.stat {
+    text-align: center;
+    padding: 1rem 1.5rem;
+    border-right: 1px solid var(--border);
+}
+
+.stat:last-child { border-right: none; }
+
+.stat-number {
+    font-size: clamp(1.3rem, 1.8vw + 0.3rem, 2.2rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    line-height: 1;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 0.35rem;
+    font-weight: 500;
+}
+
+/* Hero CTA */
+.hero-cta {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Hero Visual */
+.hero-visual { flex-shrink: 0; }
+
+.avatar-large {
+    width: clamp(160px, 18vw, 280px);
+    height: clamp(160px, 18vw, 280px);
+    border-radius: 50%;
+    background: var(--gradient-1);
+    padding: 3px;
+    transition: box-shadow 0.4s ease;
+}
+
+.avatar-large:hover {
+    box-shadow: 0 0 0 6px var(--accent-glow), 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.avatar-large-inner {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; font-weight: 800;
+    color: var(--accent); letter-spacing: 4px;
+}
+
+.avatar-large-img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}

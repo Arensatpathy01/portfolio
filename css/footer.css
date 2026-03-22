@@ -1,0 +1,31 @@
+/* =============================================
+   FOOTER — Minimal, clean
+   ============================================= */
+
+.footer {
+    margin-left: var(--sidebar-width);
+    border-top: 1px solid var(--border);
+    padding: 2rem 3rem;
+    text-align: center;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.footer-links a {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    transition: color 0.25s ease;
+}
+
+.footer-links a:hover { color: var(--accent); }
+
+.footer p {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+}

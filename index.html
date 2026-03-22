@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="css/footer.css" />
     <link rel="stylesheet" href="css/chatbot.css" />
     <link rel="stylesheet" href="css/3d-effects.css" />
+    <link rel="stylesheet" href="css/advanced.css" />
     <link rel="stylesheet" href="css/responsive.css" />
 </head>
 <body>
@@ -36,6 +37,10 @@
                 <img class="avatar-img" src="profile.jpg" alt="Aren Satpathy" />
             </div>
             <h2>Aren Satpathy</h2>
+        </div>
+        <div class="search-hint" onclick="window.openCommandPalette && window.openCommandPalette()">
+            <i class="fas fa-search"></i> Quick search…
+            <kbd>⌘K</kbd>
         </div>
         <ul class="nav-links">
             <li><a href="#hero" class="active"><i class="fas fa-home"></i><span>Home</span></a></li>
@@ -327,6 +332,9 @@
                     </div>
                 </div>
             </div>
+            <div class="skills-radar-wrapper">
+                <div id="skillsRadar"></div>
+            </div>
         </section>
 
         <!-- PROJECTS -->
@@ -532,5 +540,13 @@
     <script src="js/creative.js"></script>
     <script src="js/three-scene.js"></script>
     <script src="js/model-loader.js"></script>
+
+    <!-- Advanced Features -->
+    <script src="js/themeSwitcher.js"></script>
+    <script src="js/commandPalette.js"></script>
+    <script src="js/cursorEffects.js"></script>
+    <script src="js/pageTransitions.js"></script>
+    <script src="js/skillsRadar.js"></script>
+    <script src="js/achievements.js"></script>
 </body>
 </html>

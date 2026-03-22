@@ -9,8 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <!-- Three.js (loaded before body scripts) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 
     <!-- Stylesheets (modular) -->
     <link rel="stylesheet" href="css/base.css" />
@@ -68,6 +69,7 @@
         <section class="hero" id="hero">
             <canvas class="particles-canvas" id="particlesCanvas"></canvas>
             <div class="hero-bg-image"></div>
+            <div class="model-showcase model-showcase-hero" id="model-hero"></div>
             <div class="hero-bg-shapes">
                 <div class="shape shape-1"></div>
                 <div class="shape shape-2"></div>
@@ -186,6 +188,7 @@
 
         <!-- EXPERIENCE -->
         <section class="section" id="experience">
+            <div class="model-showcase model-showcase-section" id="model-experience"></div>
             <h2 class="section-title"><span class="emoji">💼</span> Experience</h2>
             <div class="section-banner">
                 <img src="images/code-bg.jpg" alt="Code on screen" loading="lazy" />
@@ -276,6 +279,7 @@
 
         <!-- SKILLS -->
         <section class="section" id="skills">
+            <div class="model-showcase model-showcase-section" id="model-skills"></div>
             <h2 class="section-title"><span class="emoji">🛠</span> Technical Skills</h2>
             <div class="section-banner">
                 <img src="images/circuit.jpg" alt="Circuit board" loading="lazy" />
@@ -327,6 +331,7 @@
 
         <!-- PROJECTS -->
         <section class="section" id="projects">
+            <div class="model-showcase model-showcase-section" id="model-projects"></div>
             <h2 class="section-title"><span class="emoji">💻</span> Projects</h2>
             <div class="projects-grid">
                 <div class="project-card glass-card card-3d" data-tilt>
@@ -526,5 +531,6 @@
     <script src="js/particles.js"></script>
     <script src="js/creative.js"></script>
     <script src="js/three-scene.js"></script>
+    <script src="js/model-loader.js"></script>
 </body>
 </html>

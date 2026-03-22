@@ -23,6 +23,53 @@
     height: 100% !important;
 }
 
+/* ===== 3D MODEL SHOWCASE CONTAINERS ===== */
+.model-showcase {
+    pointer-events: auto;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+.model-showcase canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Hero model - positioned behind the hero-visual on the right */
+.model-showcase-hero {
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    transform: translateY(-50%);
+    width: 40%;
+    height: 70%;
+    z-index: 0;
+    opacity: 0;
+    mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at center, black 40%, transparent 75%);
+}
+
+/* Section models - positioned as floating decorative elements */
+.model-showcase-section {
+    position: absolute;
+    top: 50%;
+    right: 2%;
+    transform: translateY(-50%);
+    width: 250px;
+    height: 300px;
+    z-index: 0;
+    opacity: 0;
+    mask-image: radial-gradient(ellipse 85% 85% at center, black 30%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at center, black 30%, transparent 70%);
+}
+
+/* ===== Section needs relative positioning for model containers ===== */
+.section {
+    position: relative;
+}
+
 /* ===== GLOBAL 3D PERSPECTIVE ===== */
 .main-content {
     perspective: 1200px;

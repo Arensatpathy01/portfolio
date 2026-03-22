@@ -16,9 +16,16 @@ html, body {
     box-sizing: border-box;
 }
 
-img, video, svg, canvas {
+img, video, svg {
     max-width: 100%;
     height: auto;
+}
+
+/* WebGL canvases should not be constrained by max-width */
+.model-showcase canvas,
+#three-bg canvas,
+.particles-canvas {
+    max-width: none;
 }
 
 /* 3D overflow protection */
@@ -28,6 +35,10 @@ img, video, svg, canvas {
 
 #three-bg {
     pointer-events: none;
+    overflow: hidden;
+}
+
+.model-showcase {
     overflow: hidden;
 }
 
@@ -41,6 +52,8 @@ p, li, span, h1, h2, h3, h4, a {
 @media (min-width: 3840px) {
     html { font-size: 22px; }
     :root { --sidebar-width: 320px; }
+    .model-showcase-hero { width: 50%; height: 85%; }
+    .model-showcase-section { width: 400px; height: 450px; }
     .main-content { max-width: 100%; width: calc(100% - var(--sidebar-width)); }
     .section { max-width: 1800px; }
     .hero-content { max-width: 1800px; }
@@ -100,6 +113,9 @@ p, li, span, h1, h2, h3, h4, a {
 @media (max-width: 1024px) {
     :root { --sidebar-width: 220px; }
 
+    .model-showcase-section { width: 200px; height: 240px; right: 1%; }
+    .model-showcase-hero { width: 35%; height: 55%; }
+
     .main-content { width: calc(100% - var(--sidebar-width)); }
 
     /* Hero reflow */
@@ -132,6 +148,11 @@ p, li, span, h1, h2, h3, h4, a {
     /* Disable Three.js 3D background on mobile */
     #three-bg {
         opacity: 0.3;
+    }
+
+    /* Hide 3D model showcases on mobile */
+    .model-showcase {
+        display: none !important;
     }
 
     /* Reduce 3D perspective intensity on mobile */
@@ -555,6 +576,7 @@ p, li, span, h1, h2, h3, h4, a {
 
     /* Disable all 3D effects */
     #three-bg { display: none; }
+    .model-showcase { display: none !important; }
     .glass-card {
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
@@ -699,6 +721,7 @@ p, li, span, h1, h2, h3, h4, a {
     .shape { display: none; }
     .fade-in { opacity: 1; transform: none; }
     #three-bg { display: none; }
+    .model-showcase { display: none !important; }
     .glass-card {
         backdrop-filter: none;
         -webkit-backdrop-filter: none;
@@ -737,7 +760,7 @@ p, li, span, h1, h2, h3, h4, a {
     .hero-bg-shapes, .contact-form-wrapper, .footer,
     .hero-cta, .sidebar-overlay, .particles-canvas, .hero-bg-image,
     .orbit-ring, .scroll-indicator, .section-banner, .contact-image,
-    #three-bg { display: none !important; }
+    #three-bg, .model-showcase { display: none !important; }
 
     * { background: white !important; color: #111 !important; border-color: #ccc !important; }
 

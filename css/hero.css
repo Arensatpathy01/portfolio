@@ -19,7 +19,9 @@
 /* Subtle background shapes — reduced from 5 to 2 */
 .hero-bg-shapes {
     position: absolute; inset: 0;
-    pointer-events: none; overflow: hidden;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
 }
 
 .shape {
@@ -110,6 +112,7 @@
     flex-wrap: wrap;
     gap: 0.6rem;
     margin-bottom: 2.5rem;
+    max-width: 100%;
 }
 
 .hero-tags span {
@@ -142,6 +145,7 @@
     overflow: hidden;
     background: var(--bg-card);
     width: fit-content;
+    max-width: 100%;
 }
 
 .stat {

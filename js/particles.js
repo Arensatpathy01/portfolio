@@ -1,5 +1,6 @@
 /* =============================================
    PARTICLES — Floating particle network on hero
+   Enhanced with 3D depth simulation
    ============================================= */
 
 (function () {
@@ -8,10 +9,10 @@
     const ctx = canvas.getContext('2d');
 
     let w, h, particles, mouse;
-    const PARTICLE_COUNT_DESKTOP = 60;
-    const PARTICLE_COUNT_MOBILE = 25;
-    const CONNECTION_DISTANCE = 120;
-    const MOUSE_RADIUS = 150;
+    const PARTICLE_COUNT_DESKTOP = 70;
+    const PARTICLE_COUNT_MOBILE = 30;
+    const CONNECTION_DISTANCE = 130;
+    const MOUSE_RADIUS = 180;
 
     mouse = { x: null, y: null };
 
@@ -29,40 +30,65 @@
         constructor() {
             this.x = Math.random() * w;
             this.y = Math.random() * h;
-            this.vx = (Math.random() - 0.5) * 0.5;
-            this.vy = (Math.random() - 0.5) * 0.5;
-            this.radius = Math.random() * 2 + 1;
-            this.opacity = Math.random() * 0.5 + 0.2;
+            this.z = Math.random() * 3 + 0.5; // Depth layer (0.5 to 3.5)
+            this.vx = (Math.random() - 0.5) * 0.4;
+            this.vy = (Math.random() - 0.5) * 0.4;
+            this.baseRadius = Math.random() * 2 + 0.8;
+            this.radius = this.baseRadius * this.z * 0.5;
+            this.opacity = (Math.random() * 0.4 + 0.15) * (this.z / 3);
+            this.pulseSpeed = Math.random() * 0.02 + 0.01;
+            this.pulseOffset = Math.random() * Math.PI * 2;
+            // Color variation based on depth
+            this.colorIndex = Math.floor(Math.random() * 3);
         }
 
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
+        update(time) {
+            // Speed based on depth (closer = faster parallax feel)
+            const speedMult = this.z * 0.3;
+            this.x += this.vx * speedMult;
+            this.y += this.vy * speedMult;
 
-            // Mouse repulsion
+            // Pulse radius for depth breathing effect
+            this.radius = this.baseRadius * this.z * 0.5 * (1 + Math.sin(time * this.pulseSpeed + this.pulseOffset) * 0.2);
+
+            // Mouse repulsion (stronger for closer particles)
             if (mouse.x !== null) {
                 const dx = this.x - mouse.x;
                 const dy = this.y - mouse.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
                 if (dist < MOUSE_RADIUS) {
                     const force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS;
-                    this.x += dx * force * 0.02;
-                    this.y += dy * force * 0.02;
+                    this.x += dx * force * 0.03 * this.z;
+                    this.y += dy * force * 0.03 * this.z;
                 }
             }
 
             // Wrap around edges
-            if (this.x < 0) this.x = w;
-            if (this.x > w) this.x = 0;
-            if (this.y < 0) this.y = h;
-            if (this.y > h) this.y = 0;
+            if (this.x < -10) this.x = w + 10;
+            if (this.x > w + 10) this.x = -10;
+            if (this.y < -10) this.y = h + 10;
+            if (this.y > h + 10) this.y = -10;
         }
 
         draw() {
+            const colors = [
+                `rgba(96, 165, 250, ${this.opacity})`,   // Blue
+                `rgba(167, 139, 250, ${this.opacity})`,   // Purple
+                `rgba(110, 231, 183, ${this.opacity * 0.8})` // Emerald
+            ];
+
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(96, 165, 250, ${this.opacity})`;
+            ctx.fillStyle = colors[this.colorIndex];
             ctx.fill();
+
+            // Add glow for closer particles
+            if (this.z > 2) {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius * 2.5, 0, Math.PI * 2);
+                ctx.fillStyle = colors[this.colorIndex].replace(this.opacity, this.opacity * 0.15);
+                ctx.fill();
+            }
         }
     }
 
@@ -81,23 +107,33 @@
                 const dx = particles[i].x - particles[j].x;
                 const dy = particles[i].y - particles[j].y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < CONNECTION_DISTANCE) {
-                    const opacity = (1 - dist / CONNECTION_DISTANCE) * 0.15;
+                // Adjust connection distance by depth
+                const avgZ = (particles[i].z + particles[j].z) / 2;
+                const adjustedDist = CONNECTION_DISTANCE * (avgZ / 2);
+
+                if (dist < adjustedDist) {
+                    const opacity = (1 - dist / adjustedDist) * 0.12 * (avgZ / 3);
                     ctx.beginPath();
                     ctx.moveTo(particles[i].x, particles[i].y);
                     ctx.lineTo(particles[j].x, particles[j].y);
                     ctx.strokeStyle = `rgba(96, 165, 250, ${opacity})`;
-                    ctx.lineWidth = 0.5;
+                    ctx.lineWidth = 0.5 * (avgZ / 2);
                     ctx.stroke();
                 }
             }
         }
     }
 
+    let time = 0;
     function animate() {
+        time++;
         ctx.clearRect(0, 0, w, h);
+
+        // Sort by depth for proper rendering (far to near)
+        particles.sort((a, b) => a.z - b.z);
+
         particles.forEach(p => {
-            p.update();
+            p.update(time);
             p.draw();
         });
         drawConnections();
@@ -118,7 +154,6 @@
 
     window.addEventListener('resize', () => {
         resize();
-        // Reinitialize if particle count changes significantly
         const newCount = getParticleCount();
         if (Math.abs(particles.length - newCount) > 10) {
             init();

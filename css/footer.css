@@ -4,10 +4,13 @@
 
 .footer {
     margin-left: var(--sidebar-width);
-    border-top: 1px solid var(--border);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
     padding: 2rem 3rem;
     text-align: center;
     box-sizing: border-box;
+    background: rgba(18, 21, 28, 0.6);
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
 }
 
 .footer-links {

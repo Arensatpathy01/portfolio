@@ -7,12 +7,15 @@
     top: 0; left: 0;
     width: var(--sidebar-width);
     height: 100vh;
-    background: var(--bg-secondary);
-    border-right: 1px solid var(--border);
+    background: rgba(18, 21, 28, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
     display: flex;
     flex-direction: column;
     z-index: 1000;
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
 }
 
 .sidebar-header {
@@ -71,9 +74,10 @@
     color: var(--text-muted);
     font-size: 0.85rem;
     font-weight: 500;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     border-left: 2px solid transparent;
     letter-spacing: 0.01em;
+    transform-style: preserve-3d;
 }
 
 .nav-links li a:hover,
@@ -81,6 +85,7 @@
     color: var(--accent);
     background: var(--accent-subtle);
     border-left-color: var(--accent);
+    transform: translateX(4px) translateZ(5px);
 }
 
 .nav-links li a i {
@@ -131,13 +136,15 @@
     position: fixed;
     top: 0; left: 0; right: 0;
     height: 56px;
-    background: rgba(18, 21, 28, 0.95);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(18, 21, 28, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     padding: 0 1.25rem;
     align-items: center;
     justify-content: space-between;
     z-index: 1600;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .mobile-header h2 {

@@ -21,6 +21,16 @@ img, video, svg, canvas {
     height: auto;
 }
 
+/* 3D overflow protection */
+.section {
+    overflow: visible;
+}
+
+#three-bg {
+    pointer-events: none;
+    overflow: hidden;
+}
+
 /* Word-break for long text on small screens */
 p, li, span, h1, h2, h3, h4, a {
     overflow-wrap: break-word;
@@ -119,6 +129,35 @@ p, li, span, h1, h2, h3, h4, a {
 
 /* ===== TABLET PORTRAIT / LARGE PHONE (≤ 768px) ===== */
 @media (max-width: 768px) {
+    /* Disable Three.js 3D background on mobile */
+    #three-bg {
+        opacity: 0.3;
+    }
+
+    /* Reduce 3D perspective intensity on mobile */
+    .main-content {
+        perspective: none;
+    }
+
+    .hero {
+        perspective: none;
+    }
+
+    /* Disable 3D card hovers on mobile */
+    .card-3d:hover,
+    .about-card:hover,
+    .skill-category:hover,
+    .timeline-content:hover,
+    .education-card:hover,
+    .cert-card:hover {
+        transform: none;
+    }
+
+    .glass-card {
+        backdrop-filter: blur(12px) saturate(150%);
+        -webkit-backdrop-filter: blur(12px) saturate(150%);
+    }
+
     /* Sidebar → off-canvas, mobile header visible */
     .sidebar {
         transform: translateX(-100%);
@@ -277,6 +316,24 @@ p, li, span, h1, h2, h3, h4, a {
 /* ===== PHONE (≤ 480px) ===== */
 @media (max-width: 480px) {
     html { font-size: 14px; }
+
+    /* Disable Three.js 3D on phones */
+    #three-bg {
+        opacity: 0.15;
+    }
+
+    .glass-card {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+
+    .hero-text,
+    .hero-visual,
+    .hero-name,
+    .hero-tags,
+    .hero-stats {
+        transform: none !important;
+    }
 
     .main-content {
         padding: 0.75rem;
@@ -495,6 +552,13 @@ p, li, span, h1, h2, h3, h4, a {
 /* ===== ULTRA SMALL (≤ 280px — Galaxy Fold etc.) ===== */
 @media (max-width: 280px) {
     html { font-size: 12px; }
+
+    /* Disable all 3D effects */
+    #three-bg { display: none; }
+    .glass-card {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
     .hero-name { font-size: 1.2rem; }
     .avatar-large { width: 90px; height: 90px; }
     .hero-tags span { font-size: 0.6rem; padding: 0.2rem 0.4rem; }
@@ -605,15 +669,19 @@ p, li, span, h1, h2, h3, h4, a {
 
 /* ===== TOUCH DEVICE HOVER FIXES ===== */
 @media (hover: none) and (pointer: coarse) {
-    .project-card:hover { transform: none; }
-    .about-card:hover { background: var(--bg-card); border-color: var(--border); }
-    .skill-category:hover { background: var(--bg-card); border-color: var(--border); }
-    .timeline-content:hover { background: var(--bg-card); border-color: var(--border); }
-    .education-card:hover { background: var(--bg-card); border-color: var(--border); }
-    .cert-card:hover { background: var(--bg-card); border-color: var(--border); }
+    .project-card:hover { transform: none; box-shadow: none; }
+    .about-card:hover { background: var(--bg-card); border-color: var(--border); transform: none; }
+    .skill-category:hover { background: var(--bg-card); border-color: var(--border); transform: none; }
+    .timeline-content:hover { background: var(--bg-card); border-color: var(--border); transform: none; }
+    .education-card:hover { background: var(--bg-card); border-color: var(--border); transform: none; }
+    .cert-card:hover { background: var(--bg-card); border-color: var(--border); transform: none; }
     .chatbot-toggle:hover { transform: none; }
     .btn-primary:hover { transform: none; }
-    .avatar-large:hover { box-shadow: none; }
+    .avatar-large:hover { box-shadow: none; transform: none !important; }
+    .contact-form-info:hover { transform: none; }
+    .query-form:hover { transform: none; }
+    .section-banner:hover { transform: none; }
+    .cert-icon:hover { transform: none; }
 
     /* Prevent 300ms tap delay */
     a, button, input, select, textarea {
@@ -630,6 +698,12 @@ p, li, span, h1, h2, h3, h4, a {
     }
     .shape { display: none; }
     .fade-in { opacity: 1; transform: none; }
+    #three-bg { display: none; }
+    .glass-card {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+    .card-3d:hover { transform: none !important; }
 }
 
 /* ===== SAFE AREA INSETS (notched phones) ===== */
@@ -662,7 +736,8 @@ p, li, span, h1, h2, h3, h4, a {
     .sidebar, .mobile-header, .chatbot-toggle, .chatbot-window,
     .hero-bg-shapes, .contact-form-wrapper, .footer,
     .hero-cta, .sidebar-overlay, .particles-canvas, .hero-bg-image,
-    .orbit-ring, .scroll-indicator, .section-banner, .contact-image { display: none !important; }
+    .orbit-ring, .scroll-indicator, .section-banner, .contact-image,
+    #three-bg { display: none !important; }
 
     * { background: white !important; color: #111 !important; border-color: #ccc !important; }
 

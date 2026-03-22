@@ -13,8 +13,10 @@
 }
 
 @keyframes float {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(10px, -10px); }
+    0%, 100% { transform: translate(0, 0) rotateX(0) rotateY(0); }
+    25% { transform: translate(5px, -8px) rotateX(2deg) rotateY(-2deg); }
+    50% { transform: translate(10px, -10px) rotateX(0) rotateY(3deg); }
+    75% { transform: translate(5px, -5px) rotateX(-2deg) rotateY(0); }
 }
 
 @keyframes shimmer {
@@ -38,19 +40,20 @@
 }
 
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(30px) translateZ(-20px) rotateX(5deg); }
+    to { opacity: 1; transform: translateY(0) translateZ(0) rotateX(0); }
 }
 
 /* ===== SCROLL FADE-IN ===== */
 .fade-in {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateY(30px) translateZ(-15px);
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 .fade-in.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
 }
 
 /* ===== ORBIT RING AROUND AVATAR ===== */
@@ -71,21 +74,22 @@
     width: calc(100% + 40px);
     height: calc(100% + 40px);
     border-radius: 50%;
-    border: 1px dashed rgba(96, 165, 250, 0.2);
+    border: 1px dashed rgba(96, 165, 250, 0.25);
     animation: orbitSpin 12s linear infinite;
     pointer-events: none;
+    transform-style: preserve-3d;
 }
 
 .orbit-dot {
     position: absolute;
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     background: var(--accent);
     border-radius: 50%;
-    top: -4px;
+    top: -5px;
     left: 50%;
     transform: translateX(-50%);
-    box-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.8), 0 0 30px rgba(96, 165, 250, 0.4);
 }
 
 .orbit-dot-2 {
@@ -158,6 +162,8 @@
     opacity: 0.06;
     z-index: 0;
     will-change: transform;
+    transform: translateZ(-50px) scale(1.5);
+    transform-style: preserve-3d;
 }
 
 /* ===== PARTICLES CANVAS ===== */
@@ -240,12 +246,13 @@
     inset: 0;
     border-radius: inherit;
     background: radial-gradient(
-        circle at var(--glow-x, 50%) var(--glow-y, 50%),
-        rgba(96, 165, 250, 0.08) 0%,
+        600px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+        rgba(96, 165, 250, 0.1) 0%,
+        rgba(167, 139, 250, 0.05) 30%,
         transparent 60%
     );
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease;
     pointer-events: none;
     z-index: 1;
 }
@@ -254,28 +261,55 @@
     opacity: 1;
 }
 
+/* ===== GLASS CARD GLOW ===== */
+.glass-card {
+    position: relative;
+}
+
+.glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        400px circle at var(--glow-x, 50%) var(--glow-y, 50%),
+        rgba(96, 165, 250, 0.06) 0%,
+        transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.glass-card:hover::before {
+    opacity: 1;
+}
+
 /* ===== STAGGER REVEAL ===== */
 .stagger-child {
     opacity: 0;
-    transform: translateY(24px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateY(30px) translateZ(-20px);
+    transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .stagger-child.stagger-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
 }
 
 /* ===== SECTION TITLE REVEAL ===== */
 .title-animate {
     opacity: 0;
-    transform: translateX(-20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transform: translateX(-20px) translateZ(-10px);
+    transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .title-animate.title-revealed {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
 }
 
 .title-animate::after {
@@ -350,8 +384,10 @@
 
 /* ===== AVATAR FLOATING ===== */
 @keyframes avatarFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
+    0%, 100% { transform: translateY(0) rotateY(0) rotateX(0); }
+    25% { transform: translateY(-4px) rotateY(3deg) rotateX(1deg); }
+    50% { transform: translateY(-8px) rotateY(0) rotateX(-1deg); }
+    75% { transform: translateY(-4px) rotateY(-3deg) rotateX(1deg); }
 }
 
 .avatar-large {
@@ -375,8 +411,8 @@
 
 /* ===== GLOWING BORDER ON CARDS ===== */
 @keyframes borderGlow {
-    0%, 100% { border-color: var(--border); }
-    50% { border-color: rgba(96, 165, 250, 0.25); }
+    0%, 100% { border-color: var(--border); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); }
+    50% { border-color: rgba(96, 165, 250, 0.25); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), 0 0 20px rgba(96, 165, 250, 0.06); }
 }
 
 .about-card:hover,

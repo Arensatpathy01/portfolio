@@ -119,10 +119,11 @@
     position: fixed; inset: 0;
     background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(4px);
-    z-index: 999;
+    z-index: 1400;
 }
 
-.sidebar-overlay.active { display: block; }
+.sidebar-overlay.active,
+.sidebar-overlay.open { display: block; }
 
 /* Mobile Header */
 .mobile-header {
@@ -136,7 +137,7 @@
     padding: 0 1.25rem;
     align-items: center;
     justify-content: space-between;
-    z-index: 999;
+    z-index: 1600;
 }
 
 .mobile-header h2 {
@@ -149,7 +150,14 @@
     background: none; border: none;
     cursor: pointer;
     display: flex; flex-direction: column;
-    gap: 5px; padding: 4px;
+    gap: 5px; padding: 8px;
+    z-index: 1601;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
 }
 
 .hamburger span {

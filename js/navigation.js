@@ -33,23 +33,49 @@ let overlay = document.createElement('div');
 overlay.className = 'sidebar-overlay';
 document.body.appendChild(overlay);
 
+function openMobileMenu() {
+    hamburger.classList.add('active');
+    sidebar.classList.add('active');
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeMobileMenu() {
+    hamburger.classList.remove('active');
+    sidebar.classList.remove('active');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+}
+
 function toggleMobileMenu() {
-    hamburger.classList.toggle('active');
-    sidebar.classList.toggle('open');
-    overlay.classList.toggle('active');
-    document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+    if (sidebar.classList.contains('open')) {
+        closeMobileMenu();
+    } else {
+        openMobileMenu();
+    }
 }
 
 hamburger.addEventListener('click', toggleMobileMenu);
-overlay.addEventListener('click', toggleMobileMenu);
+overlay.addEventListener('click', closeMobileMenu);
 
 // Close sidebar on nav link click (mobile)
 navLinks.forEach(link => {
     link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
-            toggleMobileMenu();
+            closeMobileMenu();
         }
     });
+});
+
+// Close mobile menu on resize to desktop
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && sidebar.classList.contains('open')) {
+        closeMobileMenu();
+    }
 });
 
 // ===== SMOOTH SCROLL FOR NAV LINKS =====

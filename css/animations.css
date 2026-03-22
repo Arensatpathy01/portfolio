@@ -1,7 +1,8 @@
 /* =============================================
-   ANIMATIONS — Subtle, professional keyframes
+   ANIMATIONS — Creative keyframes & effects
    ============================================= */
 
+/* ===== BASE KEYFRAMES ===== */
 @keyframes pulse-ring {
     0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
     50% { box-shadow: 0 0 0 8px transparent; }
@@ -41,14 +42,398 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Fade-in on scroll */
+/* ===== SCROLL FADE-IN ===== */
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
-
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* ===== ORBIT RING AROUND AVATAR ===== */
+@keyframes orbitSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.avatar-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orbit-ring {
+    position: absolute;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    border-radius: 50%;
+    border: 1px dashed rgba(96, 165, 250, 0.2);
+    animation: orbitSpin 12s linear infinite;
+    pointer-events: none;
+}
+
+.orbit-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+}
+
+.orbit-dot-2 {
+    top: auto;
+    bottom: -4px;
+    left: 50%;
+    background: var(--accent-secondary);
+    box-shadow: 0 0 10px rgba(167, 139, 250, 0.6);
+}
+
+.orbit-dot-3 {
+    top: 50%;
+    left: auto;
+    right: -4px;
+    transform: translateY(-50%);
+    background: var(--accent-emerald);
+    box-shadow: 0 0 10px rgba(110, 231, 183, 0.6);
+}
+
+/* ===== SCROLL INDICATOR ===== */
+@keyframes scrollBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 2;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-mouse {
+    width: 24px;
+    height: 38px;
+    border: 2px solid rgba(148, 163, 184, 0.3);
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    padding-top: 6px;
+}
+
+.scroll-wheel {
+    width: 3px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: scrollBounce 1.5s ease-in-out infinite;
+}
+
+.scroll-indicator span {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 500;
+}
+
+/* ===== HERO BACKGROUND IMAGE ===== */
+.hero-bg-image {
+    position: absolute;
+    inset: 0;
+    background: url('../images/hero-bg.jpg') center/cover no-repeat;
+    opacity: 0.06;
+    z-index: 0;
+    will-change: transform;
+}
+
+/* ===== PARTICLES CANVAS ===== */
+.particles-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: auto;
+    width: 100%;
+    height: 100%;
+}
+
+/* ===== SECTION BANNER IMAGE ===== */
+.section-banner {
+    position: relative;
+    width: 100%;
+    height: 140px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.section-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+    transition: transform 0.1s linear;
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(11, 13, 18, 0.3) 0%,
+        rgba(11, 13, 18, 0.85) 100%
+    );
+    pointer-events: none;
+}
+
+/* ===== CONTACT IMAGE ===== */
+.contact-image {
+    width: 100%;
+    height: 120px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+}
+
+.contact-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.7);
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.contact-form-info:hover .contact-image img {
+    transform: scale(1.05);
+    filter: brightness(0.85);
+}
+
+/* ===== PROJECT CARD IMAGE (replaces placeholder) ===== */
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.08);
+}
+
+/* ===== TILT CARD GLOW ===== */
+[data-tilt]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle at var(--glow-x, 50%) var(--glow-y, 50%),
+        rgba(96, 165, 250, 0.08) 0%,
+        transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+[data-tilt]:hover::after {
+    opacity: 1;
+}
+
+/* ===== STAGGER REVEAL ===== */
+.stagger-child {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.stagger-child.stagger-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== SECTION TITLE REVEAL ===== */
+.title-animate {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.title-animate.title-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.title-animate::after {
+    transition: width 0.8s ease 0.3s;
+}
+
+.title-animate:not(.title-revealed)::after {
+    width: 0 !important;
+}
+
+/* ===== CURSOR GLOW ===== */
+.cursor-glow {
+    text-shadow: 0 0 8px rgba(96, 165, 250, 0.5);
+}
+
+/* ===== TAG RIPPLE ===== */
+@keyframes tagRipple {
+    to {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.tag-ripple {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: rgba(96, 165, 250, 0.2);
+    border-radius: 50%;
+    transform: scale(0);
+    animation: tagRipple 0.6s ease-out;
+    pointer-events: none;
+}
+
+/* ===== TIMELINE DOT PULSE ===== */
+@keyframes timelineDotPulse {
+    0% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(96, 165, 250, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(96, 165, 250, 0); }
+}
+
+.dot-pulse {
+    animation: timelineDotPulse 2s ease-out;
+}
+
+/* ===== NAV GLOW ===== */
+.nav-glow {
+    text-shadow: 0 0 12px rgba(96, 165, 250, 0.3);
+}
+
+/* ===== GRADIENT BORDER ANIMATION ===== */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.hero-stats {
+    background-size: 200% 200%;
+}
+
+/* ===== COUNTER GLOW ON ANIMATE ===== */
+.counter-animated {
+    animation: counterGlow 1s ease-out;
+}
+
+@keyframes counterGlow {
+    0% { text-shadow: 0 0 0 transparent; }
+    50% { text-shadow: 0 0 20px rgba(96, 165, 250, 0.4); }
+    100% { text-shadow: 0 0 0 transparent; }
+}
+
+/* ===== AVATAR FLOATING ===== */
+@keyframes avatarFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.avatar-large {
+    animation: avatarFloat 4s ease-in-out infinite;
+}
+
+/* ===== HERO NAME GRADIENT TEXT ===== */
+.hero-name {
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-secondary) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientText 4s ease infinite;
+}
+
+@keyframes gradientText {
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
+}
+
+/* ===== GLOWING BORDER ON CARDS ===== */
+@keyframes borderGlow {
+    0%, 100% { border-color: var(--border); }
+    50% { border-color: rgba(96, 165, 250, 0.25); }
+}
+
+.about-card:hover,
+.skill-category:hover,
+.timeline-content:hover {
+    animation: borderGlow 2s ease infinite;
+}
+
+/* ===== BUTTON SHINE EFFECT ===== */
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.15),
+        transparent
+    );
+    transition: left 0.6s ease;
+}
+
+.btn-primary {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+/* ===== LOADING SHIMMER (for images) ===== */
+@keyframes loadShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.project-image,
+.section-banner,
+.contact-image {
+    background: linear-gradient(
+        90deg,
+        var(--bg-tertiary) 25%,
+        var(--bg-card-hover) 50%,
+        var(--bg-tertiary) 75%
+    );
+    background-size: 200% 100%;
+    animation: loadShimmer 1.5s ease-in-out infinite;
+}
+
+/* Stop shimmer once image loads */
+.project-image:has(img[src]),
+.section-banner:has(img[src]),
+.contact-image:has(img[src]) {
+    animation: none;
+    background: var(--bg-tertiary);
 }

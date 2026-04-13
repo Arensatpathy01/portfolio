@@ -89,8 +89,10 @@ window.addEventListener('resize', () => {
 // ===== SMOOTH SCROLL FOR NAV LINKS =====
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
-        e.preventDefault();
         const targetId = link.getAttribute('href');
+        // Only intercept hash links (#section) — let page links (features.html) navigate normally
+        if (!targetId || !targetId.startsWith('#')) return;
+        e.preventDefault();
         const target = document.querySelector(targetId);
         if (target) {
             const offset = window.innerWidth <= 768 ? 70 : 0;

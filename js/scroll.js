@@ -36,5 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }, { threshold: 0.5 });
 
-    heroObserver.observe(document.querySelector('.hero-stats'));
+    const heroStats = document.querySelector('.hero-stats');
+    if (heroStats) {
+        heroObserver.observe(heroStats);
+    }
 });

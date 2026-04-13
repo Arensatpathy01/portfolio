@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Features Guide — Aren Satpathy | Portfolio</title>
+    <meta name="description" content="Complete features guide for Aren Satpathy's interactive 3D portfolio — every feature, how to access it, and the tech behind it." />
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        /* ===== Reset & Variables ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0b0d12;
+            --bg-secondary: #12151c;
+            --bg-tertiary: #181c26;
+            --bg-card: rgba(20, 24, 34, 0.75);
+            --accent: #60a5fa;
+            --accent-hover: #93c5fd;
+            --accent-secondary: #a78bfa;
+            --accent-emerald: #6ee7b7;
+            --accent-amber: #fcd34d;
+            --accent-pink: #f9a8d4;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: rgba(148, 163, 184, 0.08);
+            --border-hover: rgba(148, 163, 184, 0.15);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --gradient-1: linear-gradient(135deg, #60a5fa, #a78bfa);
+        }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'DM Sans', 'Inter', -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== Top Navigation Bar ===== */
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(11, 13, 18, 0.85);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .topbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .topbar-brand img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(96, 165, 250, 0.25);
+        }
+
+        .topbar-brand span {
+            opacity: 0.5;
+            margin: 0 6px;
+            font-weight: 300;
+        }
+
+        .topbar-brand .page-title {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .topbar-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .topbar-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 500;
+            transition: all 0.25s;
+            border: 1px solid transparent;
+        }
+
+        .topbar-links a:hover {
+            color: var(--accent);
+            background: rgba(96, 165, 250, 0.06);
+            border-color: rgba(96, 165, 250, 0.12);
+        }
+
+        .topbar-links .back-btn {
+            background: var(--gradient-1);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+        }
+
+        .topbar-links .back-btn:hover {
+            filter: brightness(1.15);
+            transform: translateY(-1px);
+        }
+
+        /* Mobile hamburger */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        /* ===== Page Layout ===== */
+        .page-wrapper {
+            display: flex;
+            padding-top: 60px;
+            min-height: 100vh;
+        }
+
+        /* ===== Side TOC (Desktop) ===== */
+        .side-toc {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 260px;
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            padding: 1.5rem 1rem;
+            border-right: 1px solid var(--border);
+            background: rgba(11, 13, 18, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .side-toc h3 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            padding: 0 0.5rem;
+        }
+
+        .side-toc a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+            margin-bottom: 1px;
+        }
+
+        .side-toc a:hover,
+        .side-toc a.active {
+            background: rgba(96, 165, 250, 0.06);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        .side-toc a i { width: 16px; text-align: center; font-size: 0.72rem; opacity: 0.7; }
+
+        /* ===== Main Content ===== */
+        .content-area {
+            flex: 1;
+            margin-left: 260px;
+            max-width: 860px;
+            padding: 2.5rem 3rem 4rem;
+        }
+
+        /* ===== Hero Banner ===== */
+        .features-hero {
+            text-align: center;
+            padding: 3rem 0 2.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .features-hero h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 800;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .features-hero p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 540px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .f-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            border: 1px solid;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+        }
+
+        .f-badge-blue { border-color: rgba(96,165,250,0.2); color: var(--accent); }
+        .f-badge-purple { border-color: rgba(167,139,250,0.2); color: var(--accent-secondary); }
+        .f-badge-green { border-color: rgba(110,231,183,0.2); color: var(--accent-emerald); }
+        .f-badge-amber { border-color: rgba(252,211,77,0.2); color: var(--accent-amber); }
+
+        /* ===== Feature Blocks ===== */
+        .feature-block {
+            margin-bottom: 3rem;
+            scroll-margin-top: 80px;
+        }
+
+        .feature-block h2 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .feature-icon {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .fi-blue { background: rgba(96,165,250,0.1); color: var(--accent); }
+        .fi-purple { background: rgba(167,139,250,0.1); color: var(--accent-secondary); }
+        .fi-green { background: rgba(110,231,183,0.1); color: var(--accent-emerald); }
+        .fi-amber { background: rgba(252,211,77,0.1); color: var(--accent-amber); }
+        .fi-pink { background: rgba(249,168,212,0.1); color: var(--accent-pink); }
+
+        .feature-block p,
+        .feature-block li {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-block ul { list-style: none; padding: 0; }
+        .feature-block li { padding: 4px 0 4px 22px; position: relative; }
+        .feature-block li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Sub-cards */
+        .sub-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .sub-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 1.1rem;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .sub-card:hover {
+            border-color: rgba(96,165,250,0.18);
+            transform: translateY(-2px);
+        }
+
+        .sub-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .sub-card h4 i { color: var(--accent); font-size: 0.8rem; }
+        .sub-card p { font-size: 0.79rem; color: var(--text-muted); line-height: 1.55; margin: 0; }
+
+        /* Tables */
+        .ftable { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .ftable th, .ftable td { text-align: left; padding: 10px 14px; font-size: 0.84rem; border-bottom: 1px solid var(--border); }
+        .ftable th { color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.7rem; }
+        .ftable td { color: var(--text-secondary); }
+        .ftable td:first-child { color: var(--text-primary); font-weight: 500; }
+        .ftable kbd {
+            display: inline-block;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.73rem;
+            color: var(--text-secondary);
+        }
+
+        .free-tag { color: var(--accent-emerald); font-weight: 600; }
+
+        /* Arch flow */
+        .arch-flow { display: flex; flex-direction: column; gap: 8px; margin-top: 1rem; }
+        .arch-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .arch-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            backdrop-filter: blur(8px);
+        }
+        .arch-arrow { color: var(--text-muted); font-size: 0.8rem; }
+
+        /* ===== Footer ===== */
+        .features-footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .features-footer p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .features-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .features-footer a:hover { text-decoration: underline; }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.15); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(148, 163, 184, 0.25); }
+
+        /* ===== Responsive ===== */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        img, video, svg { max-width: 100%; height: auto; }
+
+        p, li, span, h1, h2, h3, h4, a, td, th, code {
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        @media (max-width: 1024px) {
+            .side-toc { display: none; }
+            .content-area { margin-left: 0; padding: 2rem 1.5rem 3rem; max-width: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .topbar { padding: 0 1rem; }
+            .topbar-links .desktop-only { display: none; }
+            .mobile-menu-btn { display: flex; }
+            .content-area { padding: 1.5rem 1rem 3rem; max-width: 100vw; overflow-x: hidden; }
+            .features-hero { padding: 2rem 0 1.5rem; }
+            .features-hero h1 { font-size: 1.6rem; }
+            .sub-cards { grid-template-columns: 1fr; }
+            .ftable { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .arch-row { gap: 6px; }
+            .arch-tag { font-size: 0.7rem; padding: 4px 8px; }
+        }
+
+        @media (max-width: 480px) {
+            .topbar-brand .divider-text { display: none; }
+            .content-area { padding: 1rem 0.75rem 2rem; }
+            .features-hero h1 { font-size: 1.3rem; }
+            .badge-row { gap: 0.4rem; }
+            .f-badge { font-size: 0.7rem; padding: 4px 10px; }
+            .feature-block h2 { font-size: 1.1rem; gap: 8px; }
+            .feature-icon { width: 28px; height: 28px; font-size: 0.75rem; }
+            .topbar-links .back-btn { padding: 6px 10px; font-size: 0.78rem; }
+        }
+
+        @media (max-width: 360px) {
+            .content-area { padding: 0.75rem 0.5rem 2rem; }
+            .feature-block h2 { font-size: 1rem; }
+            .feature-block p, .feature-block li { font-size: 0.82rem; }
+            .sub-card { padding: 0.85rem; }
+            .sub-card h4 { font-size: 0.82rem; }
+            .sub-card p { font-size: 0.72rem; }
+            .topbar-brand .page-title { display: none; }
+            .badge-row { gap: 0.3rem; }
+            .f-badge { font-size: 0.65rem; padding: 3px 8px; }
+        }
+
+        @media (max-width: 280px) {
+            .content-area { padding: 0.5rem 0.35rem 1.5rem; }
+            .topbar { padding: 0 0.5rem; height: 50px; }
+            .topbar-brand img { width: 28px; height: 28px; }
+            .topbar-brand { font-size: 0.85rem; }
+            .topbar-links .back-btn { padding: 5px 8px; font-size: 0.72rem; }
+            .feature-block h2 { font-size: 0.9rem; }
+            .features-hero h1 { font-size: 1.1rem; }
+            .arch-tag { font-size: 0.62rem; padding: 3px 6px; }
+        }
+
+        /* Mobile side-toc overlay */
+        .toc-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .toc-overlay.open { display: block; }
+
+        .side-toc-mobile {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            z-index: 1001;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .side-toc-mobile.open {
+            display: block;
+            transform: translateX(0);
+        }
+
+        .side-toc-mobile h3 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            padding: 0 0.5rem;
+        }
+
+        .side-toc-mobile a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.84rem;
+            transition: all 0.2s;
+            border-left: 2px solid transparent;
+            margin-bottom: 2px;
+        }
+
+        .side-toc-mobile a:hover {
+            background: rgba(96, 165, 250, 0.06);
+            color: var(--accent);
+            border-left-color: var(--accent);
+        }
+
+        .side-toc-mobile a i { width: 16px; text-align: center; font-size: 0.75rem; opacity: 0.7; }
+
+        .toc-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        /* Print */
+        @media print {
+            .topbar, .side-toc, .side-toc-mobile, .toc-overlay { display: none !important; }
+            .content-area { margin-left: 0 !important; padding: 0.5in !important; }
+            body { background: #fff; color: #111; }
+            .feature-block h2 { color: #111; }
+            .feature-block p, .feature-block li { color: #333; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== TOP NAVIGATION BAR ===== -->
+    <nav class="topbar">
+        <a href="index.html" class="topbar-brand">
+            <img src="profile.jpg" alt="Aren Satpathy" />
+            Aren Satpathy
+            <span class="divider-text">/</span>
+            <span class="page-title">Features Guide</span>
+        </a>
+        <div class="topbar-links">
+            <a href="index.html#about" class="desktop-only"><i class="fas fa-user"></i> About</a>
+            <a href="index.html#projects" class="desktop-only"><i class="fas fa-laptop-code"></i> Projects</a>
+            <a href="index.html#contact" class="desktop-only"><i class="fas fa-paper-plane"></i> Contact</a>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Portfolio</a>
+            <button class="mobile-menu-btn" id="tocToggle" aria-label="Toggle table of contents">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== Mobile TOC Overlay ===== -->
+    <div class="toc-overlay" id="tocOverlay"></div>
+    <aside class="side-toc-mobile" id="mobileToc">
+        <button class="toc-close-btn" id="tocClose"><i class="fas fa-times"></i></button>
+        <h3><i class="fas fa-list"></i> Contents</h3>
+        <a href="#f-3d"><i class="fas fa-cube"></i> 3D Engine & Models</a>
+        <a href="#f-command"><i class="fas fa-search"></i> Command Palette</a>
+        <a href="#f-chatbot"><i class="fas fa-robot"></i> AI Chatbot</a>
+        <a href="#f-theme"><i class="fas fa-moon"></i> Theme Switcher</a>
+        <a href="#f-github"><i class="fab fa-github"></i> GitHub Stats</a>
+        <a href="#f-contact"><i class="fas fa-envelope"></i> Contact Form</a>
+        <a href="#f-blog"><i class="fas fa-blog"></i> Blog Section</a>
+        <a href="#f-projects"><i class="fas fa-laptop-code"></i> Dynamic Projects</a>
+        <a href="#f-radar"><i class="fas fa-chart-pie"></i> Skills Radar</a>
+        <a href="#f-resume"><i class="fas fa-file-download"></i> Resume Tracker</a>
+        <a href="#f-achievements"><i class="fas fa-trophy"></i> Achievements</a>
+        <a href="#f-cursor"><i class="fas fa-mouse-pointer"></i> Custom Cursor</a>
+        <a href="#f-transitions"><i class="fas fa-magic"></i> Page Transitions</a>
+        <a href="#f-analytics"><i class="fas fa-chart-bar"></i> Analytics</a>
+        <a href="#f-arch"><i class="fas fa-sitemap"></i> Architecture</a>
+        <a href="#f-seo"><i class="fas fa-search"></i> SEO & Accessibility</a>
+        <a href="#f-cost"><i class="fas fa-coins"></i> Cost Summary</a>
+        <a href="#f-setup"><i class="fas fa-clipboard-check"></i> Setup Checklist</a>
+    </aside>
+
+    <!-- ===== LAYOUT ===== -->
+    <div class="page-wrapper">
+
+        <!-- Desktop Side TOC -->
+        <aside class="side-toc" id="sideToc">
+            <h3><i class="fas fa-list"></i> Contents</h3>
+            <a href="#f-3d"><i class="fas fa-cube"></i> 3D Engine & Models</a>
+            <a href="#f-command"><i class="fas fa-search"></i> Command Palette</a>
+            <a href="#f-chatbot"><i class="fas fa-robot"></i> AI Chatbot</a>
+            <a href="#f-theme"><i class="fas fa-moon"></i> Theme Switcher</a>
+            <a href="#f-github"><i class="fab fa-github"></i> GitHub Stats</a>
+            <a href="#f-contact"><i class="fas fa-envelope"></i> Contact Form</a>
+            <a href="#f-blog"><i class="fas fa-blog"></i> Blog Section</a>
+            <a href="#f-projects"><i class="fas fa-laptop-code"></i> Dynamic Projects</a>
+            <a href="#f-radar"><i class="fas fa-chart-pie"></i> Skills Radar</a>
+            <a href="#f-resume"><i class="fas fa-file-download"></i> Resume Tracker</a>
+            <a href="#f-achievements"><i class="fas fa-trophy"></i> Achievements</a>
+            <a href="#f-cursor"><i class="fas fa-mouse-pointer"></i> Custom Cursor</a>
+            <a href="#f-transitions"><i class="fas fa-magic"></i> Page Transitions</a>
+            <a href="#f-analytics"><i class="fas fa-chart-bar"></i> Analytics</a>
+            <a href="#f-arch"><i class="fas fa-sitemap"></i> Architecture</a>
+            <a href="#f-seo"><i class="fas fa-search"></i> SEO & Accessibility</a>
+            <a href="#f-cost"><i class="fas fa-coins"></i> Cost Summary</a>
+            <a href="#f-setup"><i class="fas fa-clipboard-check"></i> Setup Checklist</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content-area">
+
+            <!-- Hero -->
+            <section class="features-hero">
+                <h1><i class="fas fa-book-open"></i> Features Guide</h1>
+                <p>A complete walkthrough of every feature — what it does, how to access it, and the tech behind it.</p>
+                <div class="badge-row">
+                    <span class="f-badge f-badge-blue"><i class="fas fa-cube"></i> 3D Engine</span>
+                    <span class="f-badge f-badge-purple"><i class="fas fa-robot"></i> AI Chatbot</span>
+                    <span class="f-badge f-badge-green"><i class="fab fa-github"></i> GitHub API</span>
+                    <span class="f-badge f-badge-amber"><i class="fas fa-chart-bar"></i> Analytics</span>
+                </div>
+            </section>
+
+            <!-- ════════════════════════════════════════ -->
+            <!-- FEATURE SECTIONS                         -->
+            <!-- ════════════════════════════════════════ -->
+
+            <!-- 3D Engine -->
+            <div class="feature-block" id="f-3d">
+                <h2><span class="feature-icon fi-blue"><i class="fas fa-cube"></i></span> 3D Engine & GLB Models</h2>
+                <p>The entire background runs on <strong>Three.js r128</strong> with a custom WebGL scene featuring wireframe geometries, neural-network-style particles, and mouse-following camera movement.</p>
+                <div class="sub-cards">
+                    <div class="sub-card">
+                        <h4><i class="fas fa-shapes"></i> Wireframe Scene</h4>
+                        <p>Full-viewport WebGL canvas with rotating icosahedrons, tori, and octahedrons. Particles connect with dynamic lines to simulate a neural network.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-file-code"></i> GLB Models</h4>
+                        <p>Four 3D models via GLTFLoader: Robot (Hero), Damaged Helmet (Experience), Brain Stem (Projects), Astronaut (Skills). Desktop only.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-expand"></i> Responsive 3D</h4>
+                        <p>3D effects progressively degrade: full on desktop, reduced on tablet, minimal on mobile, disabled on ultra-small screens.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Command Palette -->
+            <div class="feature-block" id="f-command">
+                <h2><span class="feature-icon fi-purple"><i class="fas fa-search"></i></span> Command Palette</h2>
+                <p>Spotlight-style fuzzy search across all sections, skills, experience, and quick actions — inspired by VS Code.</p>
+                <table class="ftable">
+                    <thead><tr><th>Action</th><th>Shortcut / Trigger</th></tr></thead>
+                    <tbody>
+                        <tr><td>Open Command Palette</td><td><kbd>⌘</kbd> + <kbd>K</kbd> (Mac) &nbsp;/&nbsp; <kbd>Ctrl</kbd> + <kbd>K</kbd></td></tr>
+                        <tr><td>Navigate results</td><td><kbd>↑</kbd> / <kbd>↓</kbd> arrow keys</td></tr>
+                        <tr><td>Execute selected</td><td><kbd>Enter</kbd></td></tr>
+                        <tr><td>Close palette</td><td><kbd>Esc</kbd> or click outside</td></tr>
+                        <tr><td>Sidebar search hint</td><td>Click <em>"Quick search…"</em> in sidebar</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:1rem;">Quick actions: <strong>Email, LinkedIn, GitHub, Toggle Theme, Open Chatbot, Download Resume, Back to Top</strong>.</p>
+            </div>
+
+            <!-- AI Chatbot -->
+            <div class="feature-block" id="f-chatbot">
+                <h2><span class="feature-icon fi-blue"><i class="fas fa-robot"></i></span> AI Chatbot (Gemini 2.0)</h2>
+                <p>Floating chatbot widget powered by <strong>Google Gemini 2.0 Flash</strong> with a complete offline fallback.</p>
+                <ul>
+                    <li><strong>Open:</strong> Click the chat bubble icon (bottom-right corner on the main portfolio)</li>
+                    <li><strong>Online mode:</strong> Connects to Gemini API with full conversation context about Aren's background</li>
+                    <li><strong>Offline mode:</strong> 40+ topic keyword-matched local answers (skills, experience, projects, tech concepts)</li>
+                    <li><strong>Auto-fallback:</strong> If API fails (timeout, rate limit, invalid key), switches to offline answers</li>
+                    <li><strong>History cap:</strong> Conversation limited to 20 messages for efficiency</li>
+                    <li><strong>Setup:</strong> Set localStorage key <code>gemini_api_key</code> with your API key</li>
+                </ul>
+            </div>
+
+            <!-- Theme Switcher -->
+            <div class="feature-block" id="f-theme">
+                <h2><span class="feature-icon fi-amber"><i class="fas fa-moon"></i></span> Theme Switcher</h2>
+                <p>Cycles through 3 modes: <strong>Dark → Light → System</strong>. Persisted to localStorage.</p>
+                <ul>
+                    <li><strong>Toggle:</strong> Click the 🌙/☀️/💻 button in the sidebar footer</li>
+                    <li><strong>Command Palette:</strong> Type "theme" and select "Toggle Theme"</li>
+                    <li><strong>Light mode:</strong> Full CSS variable overrides for all cards, sidebar, hero, chatbot, forms</li>
+                    <li><strong>System:</strong> Follows <code>prefers-color-scheme</code> media query</li>
+                </ul>
+            </div>
+
+            <!-- GitHub Stats -->
+            <div class="feature-block" id="f-github">
+                <h2><span class="feature-icon fi-green"><i class="fab fa-github"></i></span> Live GitHub Stats</h2>
+                <p>Fetches live data from the <strong>GitHub REST API</strong> and renders a stats card in the About section.</p>
+                <ul>
+                    <li><strong>Data shown:</strong> Public repos, stars, forks, followers, top languages (with color bar), top repositories</li>
+                    <li><strong>Caching:</strong> 30-minute localStorage cache to respect the 60 req/hr rate limit</li>
+                    <li><strong>Fallback:</strong> If API fails, shows a simplified "View Profile" card</li>
+                    <li><strong>Location:</strong> About section → below the info cards</li>
+                </ul>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="feature-block" id="f-contact">
+                <h2><span class="feature-icon fi-blue"><i class="fas fa-envelope"></i></span> Contact Form with EmailJS</h2>
+                <p>Real email delivery without a backend server, powered by <strong>EmailJS</strong> (free: 200 emails/month).</p>
+                <ul>
+                    <li><strong>Location:</strong> "Send Me a Query" section on the main portfolio</li>
+                    <li><strong>Fields:</strong> Name*, Email*, Subject, Message* (character counter: 0/1000)</li>
+                    <li><strong>Validation:</strong> Client-side regex email check, required field checks</li>
+                    <li><strong>Rate limiting:</strong> 30-second cooldown between submissions</li>
+                    <li><strong>Fallback:</strong> If EmailJS is not configured, opens system mail client (mailto:)</li>
+                    <li><strong>Setup:</strong> Replace <code>YOUR_PUBLIC_KEY</code>, <code>YOUR_SERVICE_ID</code>, <code>YOUR_TEMPLATE_ID</code> in <code>js/emailService.js</code></li>
+                </ul>
+            </div>
+
+            <!-- Blog -->
+            <div class="feature-block" id="f-blog">
+                <h2><span class="feature-icon fi-purple"><i class="fas fa-blog"></i></span> Blog Section</h2>
+                <p>Dynamic blog loaded from <strong>data/blog.json</strong>. Database-ready — swap the JSON URL for any API endpoint.</p>
+                <ul>
+                    <li><strong>Location:</strong> Blog section (accessible from sidebar nav)</li>
+                    <li><strong>Features:</strong> Cover images, category badges, read-time estimates, tag pills, "Load More" pagination</li>
+                    <li><strong>Current posts:</strong> 4 articles (Real-Time Streaming, Career Journey, Brain Tumor Detection, Azure Certs)</li>
+                    <li><strong>Adding posts:</strong> Edit <code>data/blog.json</code> — add objects with title, excerpt, date, tags, cover, url</li>
+                </ul>
+            </div>
+
+            <!-- Dynamic Projects -->
+            <div class="feature-block" id="f-projects">
+                <h2><span class="feature-icon fi-green"><i class="fas fa-laptop-code"></i></span> Dynamic Project Showcase</h2>
+                <p>Projects loaded from <strong>data/projects.json</strong> instead of hardcoded HTML, with category filtering.</p>
+                <ul>
+                    <li><strong>Location:</strong> Projects section on the main portfolio</li>
+                    <li><strong>Features:</strong> Category filter tabs (AI/ML, Systems), badges (completed/live/WIP), highlight lists, GitHub/demo links</li>
+                    <li><strong>Current projects:</strong> Brain Tumor Detection, Real-Time Data Streaming, Flight Data Acquisition</li>
+                    <li><strong>3D tilt:</strong> All dynamically loaded cards get hover tilt effect on desktop</li>
+                    <li><strong>Fallback:</strong> If JSON fails to load, the static HTML fallback remains visible</li>
+                </ul>
+            </div>
+
+            <!-- Skills Radar -->
+            <div class="feature-block" id="f-radar">
+                <h2><span class="feature-icon fi-blue"><i class="fas fa-chart-pie"></i></span> Skills Radar Chart</h2>
+                <p>Interactive canvas-based spider/radar chart in the Skills section.</p>
+                <ul>
+                    <li><strong>Location:</strong> Skills section, below the skills grid</li>
+                    <li><strong>Categories:</strong> Core (C++ 92%, Python 78%…), Systems (Embedded 88%…), DevOps (Jenkins 78%…)</li>
+                    <li><strong>Interaction:</strong> Click tabs to switch categories. Hover data points for tooltips.</li>
+                    <li><strong>Animation:</strong> Animated draw-in with easeOutCubic easing</li>
+                </ul>
+            </div>
+
+            <!-- Resume Tracker -->
+            <div class="feature-block" id="f-resume">
+                <h2><span class="feature-icon fi-amber"><i class="fas fa-file-download"></i></span> Resume Download & Tracking</h2>
+                <p>Download buttons with a live counter showing total downloads.</p>
+                <ul>
+                    <li><strong>Buttons:</strong> Hero CTA area ("Resume 45+") and footer download card</li>
+                    <li><strong>Counter:</strong> localStorage-based with a base offset of 45</li>
+                    <li><strong>Toast:</strong> Slide-in notification — "Resume downloading… Downloaded X+ times"</li>
+                    <li><strong>Analytics:</strong> Fires GA4 event <code>resume_download</code></li>
+                    <li><strong>Setup:</strong> Place your PDF at <code>resume/Aren_Satpathy_Resume.pdf</code></li>
+                </ul>
+            </div>
+
+            <!-- Achievements -->
+            <div class="feature-block" id="f-achievements">
+                <h2><span class="feature-icon fi-amber"><i class="fas fa-trophy"></i></span> Achievements System</h2>
+                <p>Gamified scroll milestones with toast notifications — 10 achievements to unlock.</p>
+                <div class="sub-cards">
+                    <div class="sub-card">
+                        <h4><i class="fas fa-compass"></i> Explorer</h4>
+                        <p>Visit all sections of the portfolio.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-bolt"></i> Speed Reader</h4>
+                        <p>Scroll past 50% within 30 seconds.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-arrow-down"></i> Deep Diver</h4>
+                        <p>Scroll to the very bottom (100%).</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-comment"></i> Curious Mind</h4>
+                        <p>Open the AI chatbot.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-share-alt"></i> Networker</h4>
+                        <p>Click any social media link.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-moon"></i> Night Owl</h4>
+                        <p>Visit between 10 PM – 4 AM.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-sun"></i> Early Bird</h4>
+                        <p>Visit between 5 AM – 7 AM.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-heart"></i> Loyal Fan</h4>
+                        <p>Visit 3+ times (tracked in localStorage).</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-keyboard"></i> Keyboard Pro</h4>
+                        <p>Use the ⌘K command palette.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-clock"></i> Time Traveler</h4>
+                        <p>Spend 2+ minutes on the site.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom Cursor -->
+            <div class="feature-block" id="f-cursor">
+                <h2><span class="feature-icon fi-pink"><i class="fas fa-mouse-pointer"></i></span> Custom Cursor Effects</h2>
+                <p>Desktop-only animated cursor with dot, ring, glow, and canvas trail.</p>
+                <ul>
+                    <li><strong>Elements:</strong> Small dot (fast), outer ring (medium), background glow (slow)</li>
+                    <li><strong>Trail:</strong> Canvas-based particle trail with colored particles</li>
+                    <li><strong>Hover:</strong> Ring expands on interactive elements (buttons, links, cards)</li>
+                    <li><strong>Click:</strong> Ripple animation + ring squeeze effect</li>
+                    <li><strong>Disabled on:</strong> Touch devices, mobile, and <code>prefers-reduced-motion</code></li>
+                </ul>
+            </div>
+
+            <!-- Page Transitions -->
+            <div class="feature-block" id="f-transitions">
+                <h2><span class="feature-icon fi-purple"><i class="fas fa-magic"></i></span> Page Transitions & Animations</h2>
+                <ul>
+                    <li><strong>Split-text reveal:</strong> Hero name animates character-by-character on load (desktop only)</li>
+                    <li><strong>Section reveals:</strong> Cards, banners, headings fade + slide in via IntersectionObserver</li>
+                    <li><strong>Timeline:</strong> Progressive reveal with dot pulse animation</li>
+                    <li><strong>3D parallax:</strong> Section banners shift with scroll depth</li>
+                    <li><strong>Glassmorphism:</strong> Backdrop-filter blur on all cards and panels</li>
+                    <li><strong>MutationObserver:</strong> Dynamically loaded content (projects, blog) gets animated too</li>
+                </ul>
+            </div>
+
+            <!-- Analytics -->
+            <div class="feature-block" id="f-analytics">
+                <h2><span class="feature-icon fi-green"><i class="fas fa-chart-bar"></i></span> Google Analytics & Consent</h2>
+                <ul>
+                    <li><strong>Cookie consent:</strong> GDPR-compliant banner on first visit (Accept / Decline)</li>
+                    <li><strong>GA4 tracking:</strong> Section views, outbound link clicks, time-on-page, form submissions, resume downloads</li>
+                    <li><strong>Local analytics:</strong> Events also stored in localStorage for admin visibility</li>
+                    <li><strong>Setup:</strong> Replace <code>G-XXXXXXXXXX</code> in <code>js/analytics.js</code> with your GA4 Measurement ID</li>
+                </ul>
+            </div>
+
+            <!-- Architecture -->
+            <div class="feature-block" id="f-arch">
+                <h2><span class="feature-icon fi-blue"><i class="fas fa-sitemap"></i></span> Architecture Overview</h2>
+                <p>The portfolio is a fully client-side application with no backend server required.</p>
+                <div class="arch-flow">
+                    <div class="arch-row">
+                        <span class="arch-tag"><i class="fab fa-html5"></i> HTML5</span>
+                        <span class="arch-tag"><i class="fab fa-css3-alt"></i> CSS3</span>
+                        <span class="arch-tag"><i class="fab fa-js"></i> ES6+</span>
+                        <span class="arch-tag"><i class="fas fa-palette"></i> Glassmorphism</span>
+                    </div>
+                    <div class="arch-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="arch-row">
+                        <span class="arch-tag"><i class="fas fa-cube"></i> Three.js r128</span>
+                        <span class="arch-tag"><i class="fas fa-file-code"></i> GLTFLoader</span>
+                        <span class="arch-tag"><i class="fas fa-shapes"></i> GLB Models</span>
+                    </div>
+                    <div class="arch-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="arch-row">
+                        <span class="arch-tag"><i class="fas fa-robot"></i> Gemini 2.0</span>
+                        <span class="arch-tag"><i class="fab fa-github"></i> GitHub API</span>
+                        <span class="arch-tag"><i class="fas fa-envelope"></i> EmailJS</span>
+                        <span class="arch-tag"><i class="fas fa-chart-bar"></i> GA4</span>
+                    </div>
+                    <div class="arch-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="arch-row">
+                        <span class="arch-tag"><i class="fab fa-github"></i> GitHub Pages</span>
+                        <span class="arch-tag"><i class="fas fa-shield-alt"></i> HTTPS / CDN</span>
+                        <span class="arch-tag"><i class="fas fa-database"></i> localStorage</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEO & Accessibility -->
+            <div class="feature-block" id="f-seo">
+                <h2><span class="feature-icon fi-green"><i class="fas fa-search"></i></span> SEO & Accessibility</h2>
+                <ul>
+                    <li><strong>Meta tags:</strong> Title, description, keywords, author</li>
+                    <li><strong>Open Graph:</strong> og:title, og:description, og:type, og:image</li>
+                    <li><strong>Twitter Card:</strong> summary_large_image with title and description</li>
+                    <li><strong>Skip navigation:</strong> Hidden "Skip to main content" link (visible on Tab)</li>
+                    <li><strong>ARIA:</strong> aria-hidden on decorative 3D background, aria-label on hero</li>
+                    <li><strong>Reduced motion:</strong> All animations respect <code>prefers-reduced-motion: reduce</code></li>
+                    <li><strong>Print stylesheet:</strong> Clean print output, hides interactive elements</li>
+                </ul>
+            </div>
+
+            <!-- Cost Summary -->
+            <div class="feature-block" id="f-cost">
+                <h2><span class="feature-icon fi-amber"><i class="fas fa-coins"></i></span> Cost Summary</h2>
+                <table class="ftable">
+                    <thead><tr><th>Feature</th><th>Service</th><th>Cost</th></tr></thead>
+                    <tbody>
+                        <tr><td>Contact Form</td><td>EmailJS</td><td class="free-tag">Free (200/mo)</td></tr>
+                        <tr><td>Analytics</td><td>Google Analytics 4</td><td class="free-tag">Free</td></tr>
+                        <tr><td>AI Chatbot</td><td>Google Gemini 2.0</td><td class="free-tag">Free (rate-limited)</td></tr>
+                        <tr><td>GitHub Stats</td><td>GitHub REST API</td><td class="free-tag">Free</td></tr>
+                        <tr><td>3D Models</td><td>Sketchfab / CDN</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Blog / Projects</td><td>Static JSON (upgradable)</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Hosting</td><td>GitHub Pages</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Resume Tracking</td><td>localStorage</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Theme / Cursor / Achievements</td><td>Client-side JS</td><td class="free-tag">Free</td></tr>
+                    </tbody>
+                </table>
+                <p style="margin-top:1rem;color:var(--accent-emerald);font-weight:600;text-align:center;">
+                    <i class="fas fa-check-circle"></i> Total monthly cost: $0 — Everything runs on free tiers.
+                </p>
+            </div>
+
+            <!-- Setup Checklist -->
+            <div class="feature-block" id="f-setup">
+                <h2><span class="feature-icon fi-pink"><i class="fas fa-clipboard-check"></i></span> Quick Setup Checklist</h2>
+                <table class="ftable">
+                    <thead><tr><th>Step</th><th>File</th><th>Action</th></tr></thead>
+                    <tbody>
+                        <tr><td>EmailJS</td><td><code>js/emailService.js</code></td><td>Replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, YOUR_TEMPLATE_ID</td></tr>
+                        <tr><td>Google Analytics</td><td><code>js/analytics.js</code></td><td>Replace G-XXXXXXXXXX with your GA4 ID</td></tr>
+                        <tr><td>GitHub Username</td><td><code>js/githubStats.js</code></td><td>Replace 'aren-saty' with your GitHub username</td></tr>
+                        <tr><td>Resume PDF</td><td><code>resume/</code> folder</td><td>Add Aren_Satpathy_Resume.pdf</td></tr>
+                        <tr><td>Gemini API</td><td>Browser localStorage</td><td>Set key <code>gemini_api_key</code></td></tr>
+                        <tr><td>Profile Photo</td><td><code>profile.jpg</code></td><td>Replace with your photo (square, 400×400+)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Footer -->
+            <footer class="features-footer">
+                <p>&copy; <script>document.write(new Date().getFullYear())</script> Aren Satpathy · <a href="index.html">Back to Portfolio</a></p>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- ===== Interactive JS ===== -->
+    <script>
+    (function () {
+        'use strict';
+
+        // ── Mobile TOC toggle ──
+        const tocToggle = document.getElementById('tocToggle');
+        const tocOverlay = document.getElementById('tocOverlay');
+        const mobileToc = document.getElementById('mobileToc');
+        const tocClose = document.getElementById('tocClose');
+
+        function openToc() {
+            mobileToc.classList.add('open');
+            tocOverlay.classList.add('open');
+        }
+
+        function closeToc() {
+            mobileToc.classList.remove('open');
+            tocOverlay.classList.remove('open');
+        }
+
+        if (tocToggle) tocToggle.addEventListener('click', openToc);
+        if (tocOverlay) tocOverlay.addEventListener('click', closeToc);
+        if (tocClose) tocClose.addEventListener('click', closeToc);
+
+        // Close mobile TOC on link click
+        mobileToc.querySelectorAll('a').forEach(function (a) {
+            a.addEventListener('click', closeToc);
+        });
+
+        // ── Active TOC highlight on scroll ──
+        var featureBlocks = document.querySelectorAll('.feature-block');
+        var tocLinksDesktop = document.querySelectorAll('.side-toc a');
+        var tocLinksMobile = document.querySelectorAll('.side-toc-mobile a');
+
+        function highlightToc() {
+            var scrollPos = window.scrollY + 120;
+
+            featureBlocks.forEach(function (block) {
+                var top = block.offsetTop;
+                var bottom = top + block.offsetHeight;
+
+                if (scrollPos >= top && scrollPos < bottom) {
+                    var id = block.id;
+
+                    tocLinksDesktop.forEach(function (link) {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                    });
+                    tocLinksMobile.forEach(function (link) {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                    });
+                }
+            });
+        }
+
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+            if (!ticking) {
+                requestAnimationFrame(function () {
+                    highlightToc();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        highlightToc();
+    })();
+    </script>
+</body>
+</html>

@@ -394,19 +394,9 @@
     animation: avatarFloat 4s ease-in-out infinite;
 }
 
-/* ===== HERO NAME GRADIENT TEXT ===== */
+/* ===== HERO NAME COLOR ===== */
 .hero-name {
-    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 50%, var(--accent-secondary) 100%);
-    background-size: 200% auto;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientText 4s ease infinite;
-}
-
-@keyframes gradientText {
-    0%, 100% { background-position: 0% center; }
-    50% { background-position: 100% center; }
+    color: var(--text-primary);
 }
 
 /* ===== GLOWING BORDER ON CARDS ===== */

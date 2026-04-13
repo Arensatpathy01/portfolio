@@ -134,7 +134,8 @@
         glowY += (mouseY - glowY) * glowLerp;
 
         dot.style.transform = `translate(${dotX}px, ${dotY}px) translate(-50%, -50%) scale(${isClicking ? 0.6 : 1})`;
-        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) scale(${isHovering ? 1.8 : 1}${isClicking ? ' * 0.8' : ''})`;
+        const ringScale = (isHovering ? 1.8 : 1) * (isClicking ? 0.8 : 1);
+        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%) scale(${ringScale})`;
         glow.style.transform = `translate(${glowX}px, ${glowY}px) translate(-50%, -50%)`;
 
         // Draw trail

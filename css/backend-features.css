@@ -1,0 +1,819 @@
+/* =============================================
+   BACKEND FEATURES CSS
+   GitHub Stats, Blog, Project Loader, Resume,
+   Analytics Consent, Architecture, Accessibility
+   ============================================= */
+
+/* ══════════════════════════════════════════════
+   0. ACCESSIBILITY — Skip Navigation
+   ══════════════════════════════════════════════ */
+
+.skip-nav {
+    position: fixed;
+    top: -100px;
+    left: 16px;
+    z-index: 999999;
+    padding: 12px 24px;
+    border-radius: 0 0 8px 8px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+    transition: top 0.3s;
+}
+
+.skip-nav:focus {
+    top: 0;
+}
+
+.char-count {
+    display: block;
+    text-align: right;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.char-count.near-limit {
+    color: #ef4444;
+}
+
+
+/* ══════════════════════════════════════════════
+   1. GITHUB STATS CARD
+   ══════════════════════════════════════════════ */
+
+.github-card {
+    padding: 0;
+    overflow: hidden;
+}
+
+.github-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.github-avatar-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.github-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+}
+
+.github-user-info h3 {
+    font-size: 1rem;
+    color: var(--text);
+    margin: 0;
+}
+
+.github-handle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.github-handle:hover { color: var(--accent); }
+
+.btn-sm {
+    padding: 6px 14px;
+    font-size: 0.78rem;
+}
+
+.github-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.github-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    border-right: 1px solid var(--border);
+}
+
+.github-stat-item:last-child { border-right: none; }
+
+.github-stat-number {
+    font-size: 1.4rem;
+    font-weight: 800;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+}
+
+.github-stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.github-languages {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.github-languages h4 {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.github-lang-bar {
+    display: flex;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-primary);
+}
+
+.github-lang-segment {
+    transition: width 0.5s ease;
+    min-width: 2px;
+}
+
+.github-lang-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.github-lang-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.github-lang-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.github-lang-pct {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    opacity: 0.7;
+}
+
+.github-repos {
+    padding: 1.25rem 1.5rem;
+}
+
+.github-repos h4 {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.github-repos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.github-repo-card {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-primary);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.github-repo-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+}
+
+.github-repo-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.github-repo-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.github-repo-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.7rem;
+    color: var(--text-dim);
+}
+
+.github-repo-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.github-footer-note {
+    padding: 10px 1.5rem;
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    text-align: center;
+    border-top: 1px solid var(--border);
+}
+
+.github-fallback { padding: 1.5rem; }
+.github-fallback-text {
+    color: var(--text-muted);
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 0.5rem;
+}
+
+
+/* ══════════════════════════════════════════════
+   2. BLOG SECTION
+   ══════════════════════════════════════════════ */
+
+.blog-grid-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.blog-card {
+    overflow: hidden;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-card-cover {
+    position: relative;
+    height: 180px;
+    overflow: hidden;
+}
+
+.blog-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s;
+}
+
+.blog-card:hover .blog-card-cover img {
+    transform: scale(1.05);
+}
+
+.blog-card-category {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.blog-card-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.blog-card-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+}
+
+.blog-card-meta i { margin-right: 3px; }
+
+.blog-card-title {
+    font-size: 1.05rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.blog-card-excerpt {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.blog-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.blog-tag {
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--accent-subtle);
+    border: 1px solid rgba(96, 165, 250, 0.1);
+    color: var(--accent);
+    font-size: 0.68rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.blog-read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-decoration: none;
+    transition: gap 0.2s;
+}
+
+.blog-read-more:hover { gap: 10px; }
+
+.blog-load-more {
+    display: block;
+    margin: 1.5rem auto 0;
+}
+
+
+/* ══════════════════════════════════════════════
+   3. DYNAMIC PROJECT LOADER ADDITIONS
+   ══════════════════════════════════════════════ */
+
+.project-filters {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.project-filter {
+    padding: 6px 18px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.project-filter:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.project-filter.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+.projects-grid-inner {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.project-badge-completed {
+    background: var(--accent-emerald);
+    color: #064e3b;
+}
+
+.project-badge-live {
+    background: var(--accent);
+    color: #1e3a5f;
+    animation: livePulse 2s ease-in-out infinite;
+}
+
+.project-badge-wip {
+    background: var(--accent-amber);
+    color: #78350f;
+}
+
+@keyframes livePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.project-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0;
+}
+
+.project-highlights li {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    padding: 3px 0 3px 18px;
+    position: relative;
+}
+
+.project-highlights li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+.project-links {
+    display: flex;
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.project-link:hover { color: var(--accent-hover); }
+
+.project-year {
+    font-size: 0.78rem;
+    color: var(--text-dim);
+}
+
+.project-image {
+    position: relative;
+}
+
+
+/* ══════════════════════════════════════════════
+   4. RESUME DOWNLOAD
+   ══════════════════════════════════════════════ */
+
+.resume-section {
+    display: flex;
+    justify-content: center;
+    padding: 1.5rem 0;
+}
+
+.resume-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.25rem 2rem;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    max-width: 500px;
+    width: 100%;
+    transition: border-color 0.3s;
+}
+
+.resume-card:hover { border-color: var(--accent); }
+
+.resume-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+    color: #fff;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.resume-info {
+    flex: 1;
+}
+
+.resume-info h4 {
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+}
+
+.resume-info p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.resume-count {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.resume-download-btn {
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+.resume-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-emerald);
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    z-index: 99990;
+    transform: translateY(120%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.resume-toast.show { transform: translateY(0); }
+.resume-toast.hide { animation: toastSlideOut 0.3s ease-in forwards; }
+
+.resume-toast i {
+    font-size: 1.4rem;
+    color: var(--accent-emerald);
+}
+
+.resume-toast strong {
+    display: block;
+    color: var(--text);
+    font-size: 0.9rem;
+}
+
+.resume-toast span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+
+/* ══════════════════════════════════════════════
+   5. COOKIE CONSENT BANNER
+   ══════════════════════════════════════════════ */
+
+.cookie-consent {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99999;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.cookie-consent.show { transform: translateY(0); }
+
+.cookie-consent-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 16px 24px;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(20px);
+}
+
+.cookie-consent-text {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.cookie-consent-text i {
+    font-size: 1.3rem;
+    color: var(--accent-amber);
+}
+
+.cookie-consent-text p { margin: 0; }
+
+.cookie-consent-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.cookie-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+}
+
+.cookie-accept {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+.cookie-accept:hover { background: var(--accent-hover); }
+
+.cookie-decline {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+
+.cookie-decline:hover {
+    border-color: var(--text-muted);
+    color: var(--text);
+}
+
+
+/* ══════════════════════════════════════════════
+   6. ARCHITECTURE SECTION
+   ══════════════════════════════════════════════ */
+
+.arch-diagram {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.arch-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.arch-layer {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    opacity: 0;
+    transform: translateX(-20px);
+    animation: archFadeIn 0.5s ease forwards;
+}
+
+.arch-layer:nth-child(1) { animation-delay: 0.1s; }
+.arch-layer:nth-child(2) { animation-delay: 0.2s; }
+.arch-layer:nth-child(3) { animation-delay: 0.3s; }
+.arch-layer:nth-child(4) { animation-delay: 0.4s; }
+.arch-layer:nth-child(5) { animation-delay: 0.5s; }
+
+@keyframes archFadeIn {
+    to { opacity: 1; transform: translateX(0); }
+}
+
+.arch-label {
+    width: 100px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-align: center;
+    writing-mode: horizontal-tb;
+}
+
+.arch-label-frontend { background: rgba(96,165,250,0.12); color: var(--accent); border: 1px solid rgba(96,165,250,0.2); }
+.arch-label-3d { background: rgba(167,139,250,0.12); color: var(--accent-secondary); border: 1px solid rgba(167,139,250,0.2); }
+.arch-label-api { background: rgba(110,231,183,0.12); color: var(--accent-emerald); border: 1px solid rgba(110,231,183,0.2); }
+.arch-label-services { background: rgba(252,211,77,0.12); color: var(--accent-amber); border: 1px solid rgba(252,211,77,0.2); }
+.arch-label-infra { background: rgba(249,168,212,0.12); color: var(--accent-pink); border: 1px solid rgba(249,168,212,0.2); }
+
+.arch-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1;
+    align-items: center;
+}
+
+.arch-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+.arch-item:hover {
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+    color: var(--text);
+}
+
+.arch-item i {
+    font-size: 0.85rem;
+}
+
+.arch-connector {
+    text-align: center;
+    padding: 4px 0;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+}
+
+
+/* ══════════════════════════════════════════════
+   7. LIGHT THEME OVERRIDES (new sections)
+   ══════════════════════════════════════════════ */
+
+[data-theme="light"] .github-card,
+[data-theme="light"] .blog-card,
+[data-theme="light"] .resume-card,
+[data-theme="light"] .arch-item {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--border);
+}
+
+[data-theme="light"] .github-repo-card {
+    background: var(--bg-secondary);
+    border-color: var(--border);
+}
+
+[data-theme="light"] .cookie-consent-inner {
+    background: rgba(255, 255, 255, 0.95);
+}
+
+
+/* ══════════════════════════════════════════════
+   8. RESPONSIVE OVERRIDES
+   ══════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .github-stats-row { grid-template-columns: repeat(2, 1fr); }
+    .github-repos-grid { grid-template-columns: 1fr; }
+
+    .blog-grid-inner { grid-template-columns: 1fr; }
+
+    .projects-grid-inner { grid-template-columns: 1fr; }
+    .project-filters { gap: 6px; }
+    .project-filter { padding: 5px 12px; font-size: 0.75rem; }
+
+    .resume-card { flex-direction: column; text-align: center; gap: 1rem; }
+
+    .cookie-consent-inner { flex-direction: column; text-align: center; gap: 0.75rem; }
+
+    .arch-layer { flex-direction: column; }
+    .arch-label { width: 100%; writing-mode: horizontal-tb; }
+    .arch-items { justify-content: center; }
+
+    .resume-toast { left: 12px; right: 12px; }
+}

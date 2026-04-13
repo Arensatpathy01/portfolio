@@ -15,6 +15,7 @@ let isDeleting = false;
 const typedEl = document.getElementById('typedText');
 
 function typeEffect() {
+    if (!typedEl) return;
     const currentTitle = titles[titleIndex];
     
     if (isDeleting) {

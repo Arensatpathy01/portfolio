@@ -1,0 +1,48 @@
+{
+    "posts": [
+        {
+            "title": "Building Real-Time Data Streaming with C++ & WebSocket",
+            "excerpt": "How I engineered a high-performance data streaming interface at Boeing — handling 1000+ concurrent channels with minimal jitter using multi-threaded WebSocket servers.",
+            "date": "2025-09-15",
+            "category": "Systems",
+            "readTime": "8 min",
+            "cover": "images/code-bg.jpg",
+            "tags": ["C++", "WebSocket", "Real-Time", "Multithreading"],
+            "url": "#experience",
+            "external": false
+        },
+        {
+            "title": "My Journey from Cognizant to Boeing to NetApp",
+            "excerpt": "Lessons learned transitioning from TechOps at Cognizant (Nike Converse) to embedded systems at Boeing, and now enterprise storage at NetApp. Each role shaped my engineering mindset.",
+            "date": "2025-11-20",
+            "category": "Career",
+            "readTime": "6 min",
+            "cover": "images/workspace.jpg",
+            "tags": ["Career", "Software Engineering", "Growth"],
+            "url": "#experience",
+            "external": false
+        },
+        {
+            "title": "Deep Learning for Brain Tumor Detection — A Technical Breakdown",
+            "excerpt": "An in-depth look at the CNN architecture, transfer learning approach, and data preprocessing pipeline I built for MRI-based brain tumor classification with 95%+ accuracy.",
+            "date": "2022-05-10",
+            "category": "AI/ML",
+            "readTime": "10 min",
+            "cover": "images/brain-ai.jpg",
+            "tags": ["Deep Learning", "Python", "CNN", "Medical AI"],
+            "url": "#projects",
+            "external": false
+        },
+        {
+            "title": "Getting Azure Certified — AZ-900 & Administrator Associate",
+            "excerpt": "Study strategy, resources, and tips for passing Microsoft Azure certifications. What I learned about cloud architecture and how it applies to my daily work.",
+            "date": "2023-08-22",
+            "category": "Cloud",
+            "readTime": "5 min",
+            "cover": "images/graduation.jpg",
+            "tags": ["Azure", "Cloud", "Certifications"],
+            "url": "#certifications",
+            "external": false
+        }
+    ]
+}

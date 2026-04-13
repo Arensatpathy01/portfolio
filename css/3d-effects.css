@@ -138,9 +138,7 @@
     transform-style: preserve-3d;
 }
 
-.hero-name {
-    transform: translateZ(10px);
-}
+/* hero-name: no translateZ — conflicts with background-clip:text */
 
 .hero-tags {
     transform: translateZ(5px);

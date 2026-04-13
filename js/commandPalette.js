@@ -19,6 +19,8 @@
         { type: 'nav', icon: 'fas fa-graduation-cap',  label: 'Education',      section: '#education',      keywords: 'education university degree college school' },
         { type: 'nav', icon: 'fas fa-certificate',     label: 'Certifications', section: '#certifications', keywords: 'certifications awards achievements badges' },
         { type: 'nav', icon: 'fas fa-paper-plane',     label: 'Contact',        section: '#contact',        keywords: 'contact email message query reach' },
+        { type: 'nav', icon: 'fas fa-blog',             label: 'Blog',           section: '#blog',           keywords: 'blog articles posts insights writing' },
+        { type: 'nav', icon: 'fas fa-sitemap',          label: 'Architecture',   section: '#architecture',   keywords: 'architecture tech stack how built system design' },
 
         // Experience
         { type: 'exp', icon: 'fas fa-building',  label: 'NetApp — Software Engineer 2',                    section: '#experience', keywords: 'netapp software engineer storage bengaluru current 2025' },
@@ -44,6 +46,9 @@
 
         // Projects
         { type: 'project', icon: 'fas fa-brain', label: 'Brain Tumor Detection (Deep Learning)', section: '#projects', keywords: 'brain tumor detection deep learning mri python machine learning ai' },
+        { type: 'project', icon: 'fas fa-broadcast-tower', label: 'Real-Time Data Streaming Interface', section: '#projects', keywords: 'data streaming websocket c++ real-time pxi boeing' },
+        { type: 'project', icon: 'fas fa-globe', label: 'Portfolio — 3D Interactive Experience', section: '#projects', keywords: 'portfolio website threejs 3d interactive' },
+        { type: 'project', icon: 'fas fa-microchip', label: 'Flight Data Acquisition Module', section: '#projects', keywords: 'flight data acquisition embedded boeing can gps serial' },
 
         // Education
         { type: 'edu', icon: 'fas fa-graduation-cap', label: 'VSSUT Burla — B.Tech',                section: '#education', keywords: 'vssut burla btech engineering university 2022' },
@@ -61,6 +66,7 @@
         { type: 'action', icon: 'fas fa-robot',     label: 'Open AI Chatbot', action: 'chatbot',   keywords: 'chatbot ai assistant ask question gemini' },
         { type: 'action', icon: 'fas fa-moon',      label: 'Toggle Theme',    action: 'theme',     keywords: 'theme dark light mode toggle switch color' },
         { type: 'action', icon: 'fas fa-arrow-up',  label: 'Back to Top',     action: 'top',       keywords: 'top scroll up beginning start' },
+        { type: 'action', icon: 'fas fa-file-download', label: 'Download Resume', action: 'resume', keywords: 'resume download cv pdf' },
     ];
 
     // ─── Type labels & colors ───
@@ -187,7 +193,7 @@
                     window.open('https://www.linkedin.com/in/aren-satpathy-84793897/', '_blank');
                     break;
                 case 'github':
-                    window.open('https://github.com/', '_blank');
+                    window.open('https://github.com/aren-saty', '_blank');
                     break;
                 case 'chatbot':
                     document.getElementById('chatbotToggle')?.click();
@@ -197,6 +203,9 @@
                     break;
                 case 'top':
                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                    break;
+                case 'resume':
+                    if (window.ResumeTracker) window.ResumeTracker.download();
                     break;
             }
             return;

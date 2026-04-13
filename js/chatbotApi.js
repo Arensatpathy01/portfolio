@@ -32,6 +32,11 @@ let chatHistory = [];
 async function callGeminiAPI(text) {
     chatHistory.push({ role: 'user', content: text });
 
+    // Cap history to last 20 messages to prevent memory leak
+    if (chatHistory.length > 20) {
+        chatHistory = chatHistory.slice(-20);
+    }
+
     // 15-second timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000);

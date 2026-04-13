@@ -41,8 +41,11 @@
     }
 
     // ─── Apply to hero name and section titles ───
+    // Skip split-text on small screens — just show the name
     const heroName = document.querySelector('.hero-name');
-    if (heroName) splitText(heroName);
+    if (heroName && window.innerWidth > 768) {
+        splitText(heroName);
+    }
 
     // ─── Parallax layers ───
     const parallaxElements = [];
@@ -69,7 +72,7 @@
                     section.classList.add('section-visible');
 
                     // Stagger children
-                    const children = section.querySelectorAll('.about-card, .timeline-item, .skill-category, .project-card, .education-card, .cert-card, h2, .section-banner');
+                    const children = section.querySelectorAll('.about-card, .timeline-item, .skill-category, .project-card, .education-card, .cert-card, .blog-card, h2, .section-banner');
                     children.forEach((child, i) => {
                         child.style.transitionDelay = `${i * 80}ms`;
                         child.classList.add('child-visible');
@@ -82,47 +85,32 @@
         });
 
         sections.forEach(s => observer.observe(s));
-    }
 
-    // ─── Smooth parallax on scroll ───
-    let ticking = false;
-
-    function onScroll() {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                const scrollY = window.pageYOffset;
-
-                parallaxElements.forEach(({ el, speed }) => {
-                    const rect = el.getBoundingClientRect();
-                    const visible = rect.top < window.innerHeight && rect.bottom > 0;
-                    if (visible) {
-                        const offset = (rect.top - window.innerHeight / 2) * speed;
-                        el.style.transform = `translateY(${offset}px) scale(1.1)`;
-                    }
-                });
-
-                // Section depth effect
-                sections.forEach(section => {
-                    const rect = section.getBoundingClientRect();
-                    const center = rect.top + rect.height / 2;
-                    const viewCenter = window.innerHeight / 2;
-                    const distance = Math.abs(center - viewCenter) / window.innerHeight;
-                    const scale = 1 - distance * 0.02;
-                    const opacity = 1 - distance * 0.3;
-
-                    if (rect.top < window.innerHeight && rect.bottom > 0) {
-                        section.style.transform = `scale(${Math.max(scale, 0.96)})`;
-                        section.style.opacity = Math.max(opacity, 0.7);
-                    }
-                });
-
-                ticking = false;
+        // Re-apply child-visible for dynamically loaded content
+        // (e.g. projectLoader.js, blogLoader.js inject cards after initial observe)
+        const mutationObs = new MutationObserver((mutations) => {
+            mutations.forEach(mut => {
+                const section = mut.target.closest('.section');
+                if (section && section.classList.contains('section-visible')) {
+                    const newChildren = section.querySelectorAll(
+                        '.about-card, .timeline-item, .skill-category, .project-card, .education-card, .cert-card, .blog-card, h2, .section-banner'
+                    );
+                    newChildren.forEach((child, i) => {
+                        if (!child.classList.contains('child-visible')) {
+                            child.style.transitionDelay = `${i * 60}ms`;
+                            child.classList.add('child-visible');
+                        }
+                    });
+                }
             });
-            ticking = true;
-        }
+        });
+
+        sections.forEach(s => {
+            mutationObs.observe(s, { childList: true, subtree: true });
+        });
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
+    // ─── Smooth parallax on scroll ───\n    // NOTE: Section depth/parallax is handled by creative.js.\n    // This file only handles the MutationObserver for dynamically loaded content.
 
     // ─── Text reveal on scroll ───
     function setupTextReveal() {
@@ -144,25 +132,7 @@
         });
     }
 
-    // ─── Magnetic hover for buttons ───
-    function setupMagneticButtons() {
-        const buttons = document.querySelectorAll('.btn, .hero-cta a');
-
-        buttons.forEach(btn => {
-            btn.addEventListener('mousemove', (e) => {
-                const rect = btn.getBoundingClientRect();
-                const x = e.clientX - rect.left - rect.width / 2;
-                const y = e.clientY - rect.top - rect.height / 2;
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-            });
-
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform = '';
-                btn.style.transition = 'transform 0.4s cubic-bezier(0.23, 1, 0.32, 1)';
-                setTimeout(() => { btn.style.transition = ''; }, 400);
-            });
-        });
-    }
+    // ─── Magnetic buttons handled by creative.js ───
 
     // ─── Timeline progressive reveal ───
     function setupTimelineReveal() {
@@ -186,9 +156,7 @@
     }
 
     // ─── Initialize ───
-    setupParallax();
     createSectionObserver();
     setupTextReveal();
-    setupMagneticButtons();
     setupTimelineReveal();
 })();

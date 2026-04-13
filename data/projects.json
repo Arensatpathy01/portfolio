@@ -1,0 +1,69 @@
+{
+    "projects": [
+        {
+            "title": "Brain Tumor Detection Using Deep Learning",
+            "description": "A brain tumor detection system leveraging Machine Learning and Deep Learning algorithms applied to MRI images. The system performs brain tumor prediction quickly with high accuracy, helping radiologists make faster clinical decisions and deliver timely treatment to patients.",
+            "image": "images/brain-ai.jpg",
+            "duration": "151 Days",
+            "year": "2022",
+            "category": "AI/ML",
+            "status": "completed",
+            "highlights": [
+                "Achieved 95%+ accuracy on MRI brain scan classification",
+                "Implemented CNN architecture with transfer learning",
+                "Built end-to-end pipeline: preprocessing → training → inference"
+            ],
+            "tags": [
+                { "name": "Deep Learning", "url": "https://en.wikipedia.org/wiki/Deep_learning" },
+                { "name": "MRI", "url": "https://en.wikipedia.org/wiki/Magnetic_resonance_imaging" },
+                { "name": "Python", "url": "https://en.wikipedia.org/wiki/Python_(programming_language)" },
+                { "name": "Machine Learning", "url": "https://en.wikipedia.org/wiki/Machine_learning" }
+            ],
+            "github": "",
+            "paper": ""
+        },
+        {
+            "title": "Real-Time Data Streaming Interface",
+            "description": "Engineered a high-performance real-time data streaming interface using C++ and WebSocket technology to simulate and transmit signal waveforms at Boeing.",
+            "image": "images/code-bg.jpg",
+            "duration": "6 Months",
+            "year": "2024",
+            "category": "Systems",
+            "status": "completed",
+            "highlights": [
+                "Streamed 1000+ unique virtual channels simultaneously",
+                "Multiple WebSocket servers on independent ports",
+                "PXI-based hardware integration with minimal jitter",
+                "Precise timing control for synchronized data transmission"
+            ],
+            "tags": [
+                { "name": "C++", "url": "https://en.wikipedia.org/wiki/C%2B%2B" },
+                { "name": "WebSocket", "url": "https://en.wikipedia.org/wiki/WebSocket" },
+                { "name": "Real-Time Systems", "url": "https://en.wikipedia.org/wiki/Real-time_computing" },
+                { "name": "PXI", "url": "https://en.wikipedia.org/wiki/PXI" },
+                { "name": "Multithreading", "url": "https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)" }
+            ]
+        },
+        {
+            "title": "Embedded Software Module — Flight Data Acquisition",
+            "description": "Led end-to-end design, implementation, and maintenance of a performance-critical software module for real-time data acquisition and processing at Boeing.",
+            "image": "images/circuit.jpg",
+            "duration": "1.5 Years",
+            "year": "2024–2025",
+            "category": "Systems",
+            "status": "completed",
+            "highlights": [
+                "Processed serial bus, GPS, CAN protocol data packets",
+                "Multi-threaded architecture for concurrent processing",
+                "Cross-team collaboration with engineering, QA & systems",
+                "Authored comprehensive technical documentation"
+            ],
+            "tags": [
+                { "name": "C++", "url": "https://en.wikipedia.org/wiki/C%2B%2B" },
+                { "name": "Embedded Systems", "url": "https://en.wikipedia.org/wiki/Embedded_system" },
+                { "name": "Multithreading", "url": "https://en.wikipedia.org/wiki/Multithreading_(computer_architecture)" },
+                { "name": "Data Acquisition", "url": "https://en.wikipedia.org/wiki/Data_acquisition" }
+            ]
+        }
+    ]
+}

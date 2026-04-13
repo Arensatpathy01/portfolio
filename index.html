@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Aren Satpathy | Software Engineer 2</title>
+    <title>Aren Satpathy | Software Engineer 2 — Portfolio</title>
+    <meta name="description" content="Software Engineer 2 at NetApp. Experienced in C++, embedded systems, real-time data streaming, and DevOps. Previously at Boeing and Cognizant." />
+    <meta name="keywords" content="Aren Satpathy, Software Engineer, NetApp, C++, Embedded Systems, Portfolio" />
+    <meta name="author" content="Aren Satpathy" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Aren Satpathy | Software Engineer 2" />
+    <meta property="og:description" content="Interactive 3D portfolio showcasing projects, skills, and experience in software engineering." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="profile.jpg" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Aren Satpathy | Software Engineer 2" />
+    <meta name="twitter:description" content="Interactive 3D portfolio — C++, Embedded Systems, DevOps" />
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -24,11 +38,18 @@
     <link rel="stylesheet" href="css/chatbot.css" />
     <link rel="stylesheet" href="css/3d-effects.css" />
     <link rel="stylesheet" href="css/advanced.css" />
+    <link rel="stylesheet" href="css/backend-features.css" />
     <link rel="stylesheet" href="css/responsive.css" />
+
+    <!-- EmailJS SDK (free tier: 200 emails/month) -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
+    <!-- Skip Nav (Accessibility) -->
+    <a href="#hero" class="skip-nav">Skip to main content</a>
+
     <!-- ====== 3D BACKGROUND ====== -->
-    <div id="three-bg"></div>
+    <div id="three-bg" aria-hidden="true"></div>
 
     <!-- ====== SIDEBAR NAV ====== -->
     <nav class="sidebar" id="sidebar">
@@ -50,10 +71,12 @@
             <li><a href="#projects"><i class="fas fa-laptop-code"></i><span>Projects</span></a></li>
             <li><a href="#education"><i class="fas fa-graduation-cap"></i><span>Education</span></a></li>
             <li><a href="#certifications"><i class="fas fa-certificate"></i><span>Certifications</span></a></li>
+            <li><a href="#blog"><i class="fas fa-blog"></i><span>Blog</span></a></li>
             <li><a href="#contact"><i class="fas fa-paper-plane"></i><span>Contact</span></a></li>
+            <li><a href="features.html"><i class="fas fa-book-open"></i><span>Features Guide</span></a></li>
         </ul>
         <div class="sidebar-footer">
-            <a href="https://github.com/" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://github.com/aren-saty" target="_blank"><i class="fab fa-github"></i></a>
             <a href="https://www.linkedin.com/in/aren-satpathy-84793897/" target="_blank"><i class="fab fa-linkedin"></i></a>
             <a href="mailto:aren.saty@gmail.com"><i class="fas fa-envelope"></i></a>
         </div>
@@ -117,6 +140,7 @@
                     <div class="hero-cta">
                         <a href="mailto:aren.saty@gmail.com" class="btn btn-primary"><i class="fas fa-envelope"></i> Contact Me</a>
                         <a href="https://www.linkedin.com/in/aren-satpathy-84793897/" target="_blank" class="btn btn-outline"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                        <a href="#" class="btn btn-outline resume-download-btn"><i class="fas fa-file-download"></i> Resume <span class="resume-count">45+</span></a>
                     </div>
                 </div>
                 <div class="hero-visual">
@@ -189,6 +213,9 @@
                     </div>
                 </div>
             </div>
+
+            <!-- GitHub Stats — loaded dynamically via API -->
+            <div id="githubStats" style="margin-top:2rem;"></div>
         </section>
 
         <!-- EXPERIENCE -->
@@ -341,26 +368,25 @@
         <section class="section" id="projects">
             <div class="model-showcase model-showcase-section" id="model-projects"></div>
             <h2 class="section-title"><span class="emoji">💻</span> Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card glass-card card-3d" data-tilt>
-                    <div class="project-image">
-                        <img src="images/brain-ai.jpg" alt="Brain Tumor Detection AI" loading="lazy" />
-                    </div>
-                    <div class="project-info">
-                        <h3>Brain Tumor Detection Using Deep Learning</h3>
-                        <p>
-                            A brain tumor detection system leveraging Machine Learning and Deep Learning algorithms 
-                            applied to MRI images. The system performs brain tumor prediction quickly with high 
-                            accuracy, helping radiologists make faster clinical decisions and deliver timely treatment to patients.
-                        </p>
-                        <div class="project-meta">
-                            <span class="project-duration"><i class="fas fa-clock"></i> 151 Days</span>
+            <!-- Projects loaded dynamically from data/projects.json -->
+            <div id="projectsGrid">
+                <!-- Fallback: shown if JS fails -->
+                <div class="projects-grid">
+                    <div class="project-card glass-card card-3d" data-tilt>
+                        <div class="project-image">
+                            <img src="images/brain-ai.jpg" alt="Brain Tumor Detection AI" loading="lazy" />
                         </div>
-                        <div class="tech-tags">
-                            <a href="https://en.wikipedia.org/wiki/Deep_learning" target="_blank"><span>Deep Learning</span></a>
-                            <a href="https://en.wikipedia.org/wiki/Magnetic_resonance_imaging" target="_blank"><span>Magnetic Resonance Imaging</span></a>
-                            <a href="https://en.wikipedia.org/wiki/Python_(programming_language)" target="_blank"><span>Python</span></a>
-                            <a href="https://en.wikipedia.org/wiki/Machine_learning" target="_blank"><span>Machine Learning</span></a>
+                        <div class="project-info">
+                            <h3>Brain Tumor Detection Using Deep Learning</h3>
+                            <p>A brain tumor detection system leveraging ML and Deep Learning on MRI images with 95%+ accuracy.</p>
+                            <div class="project-meta">
+                                <span class="project-duration"><i class="fas fa-clock"></i> 151 Days</span>
+                            </div>
+                            <div class="tech-tags">
+                                <a href="https://en.wikipedia.org/wiki/Deep_learning" target="_blank"><span>Deep Learning</span></a>
+                                <a href="https://en.wikipedia.org/wiki/Python_(programming_language)" target="_blank"><span>Python</span></a>
+                                <a href="https://en.wikipedia.org/wiki/Machine_learning" target="_blank"><span>Machine Learning</span></a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -430,6 +456,14 @@
             </div>
         </section>
 
+        <!-- BLOG -->
+        <section class="section" id="blog">
+            <h2 class="section-title"><span class="emoji">📝</span> Blog & Insights</h2>
+            <div id="blogGrid">
+                <!-- Blog posts loaded dynamically from data/blog.json -->
+            </div>
+        </section>
+
         <!-- CONTACT / QUERY -->
         <section class="section" id="contact">
             <h2 class="section-title"><span class="emoji">📬</span> Send Me a Query</h2>
@@ -488,11 +522,24 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-content">
+            <!-- Resume Download Card -->
+            <div class="resume-section">
+                <div class="resume-card">
+                    <div class="resume-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="resume-info">
+                        <h4>Download My Resume</h4>
+                        <p>Downloaded <span class="resume-count">45+</span> times</p>
+                    </div>
+                    <a href="#" class="btn btn-primary btn-sm resume-download-btn"><i class="fas fa-download"></i> Download</a>
+                </div>
+            </div>
             <div class="footer-links">
+                <a href="https://github.com/aren-saty" target="_blank"><i class="fab fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/aren-satpathy-84793897/" target="_blank"><i class="fab fa-linkedin"></i></a>
                 <a href="mailto:aren.saty@gmail.com"><i class="fas fa-envelope"></i></a>
+                <a href="features.html" title="Features Guide"><i class="fas fa-book-open"></i></a>
             </div>
-            <p>© 2026 Aren Satpathy</p>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Aren Satpathy · Built with ❤️ and JavaScript</p>
         </div>
     </footer>
 
@@ -548,5 +595,13 @@
     <script src="js/pageTransitions.js"></script>
     <script src="js/skillsRadar.js"></script>
     <script src="js/achievements.js"></script>
+
+    <!-- Backend / Service Features -->
+    <script src="js/emailService.js"></script>
+    <script src="js/githubStats.js"></script>
+    <script src="js/projectLoader.js"></script>
+    <script src="js/resumeTracker.js"></script>
+    <script src="js/blogLoader.js"></script>
+    <script src="js/analytics.js"></script>
 </body>
 </html>

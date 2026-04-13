@@ -235,6 +235,30 @@ p, li, span, h1, h2, h3, h4, a {
     .hero-text { align-items: center; max-width: 100%; }
     .hero-name { font-size: 2rem; }
     .hero-greeting { font-size: 0.82rem; }
+
+    /* Ensure hero name visible on tablet (no split-text animation, no gradient-clip) */
+    .hero-name,
+    .hero-name .split-char,
+    .hero-name .split-word {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        color: var(--text-primary) !important;
+        animation: none !important;
+    }
+    .hero-greeting {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .hero-text,
+    .hero-content {
+        transform: none !important;
+        transform-style: flat !important;
+    }
     .hero-title-wrapper {
         justify-content: center;
         font-size: 0.95rem;
@@ -377,6 +401,30 @@ p, li, span, h1, h2, h3, h4, a {
     }
     .hero-name { font-size: 1.6rem; letter-spacing: -0.02em; }
     .hero-greeting { font-size: 0.75rem; margin-bottom: 0.5rem; }
+
+    /* Ensure hero name is always visible on mobile (no split-text, no gradient-clip, no 3D) */
+    .hero-name,
+    .hero-name .split-char,
+    .hero-name .split-word {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        color: var(--text-primary) !important;
+        animation: none !important;
+    }
+    .hero-greeting {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+    .hero-text,
+    .hero-content {
+        transform: none !important;
+        transform-style: flat !important;
+    }
     .hero-title-wrapper { font-size: 0.85rem; min-height: 1.5rem; }
 
     .avatar-large { width: 130px; height: 130px; }
@@ -538,6 +586,16 @@ p, li, span, h1, h2, h3, h4, a {
     html { font-size: 13px; }
 
     .hero-name { font-size: 1.4rem; }
+    .hero-name, .hero-name .split-char, .hero-name .split-word {
+        opacity: 1 !important; transform: none !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        color: var(--text-primary) !important;
+        animation: none !important;
+    }
+    .hero-greeting { opacity: 1 !important; transform: none !important; }
     .hero-title-wrapper { font-size: 0.8rem; }
     .avatar-large { width: 110px; height: 110px; }
 
@@ -582,6 +640,16 @@ p, li, span, h1, h2, h3, h4, a {
         -webkit-backdrop-filter: none;
     }
     .hero-name { font-size: 1.2rem; }
+    .hero-name, .hero-name .split-char, .hero-name .split-word {
+        opacity: 1 !important; transform: none !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        color: var(--text-primary) !important;
+        animation: none !important;
+    }
+    .hero-greeting { opacity: 1 !important; transform: none !important; }
     .avatar-large { width: 90px; height: 90px; }
     .hero-tags span { font-size: 0.6rem; padding: 0.2rem 0.4rem; }
     .hero-stats { grid-template-columns: 1fr 1fr; max-width: 220px; }
@@ -617,6 +685,16 @@ p, li, span, h1, h2, h3, h4, a {
     }
     .hero-text { align-items: flex-start; }
     .hero-name { font-size: 1.5rem; }
+    .hero-name, .hero-name .split-char, .hero-name .split-word {
+        opacity: 1 !important; transform: none !important;
+        -webkit-text-fill-color: var(--text-primary) !important;
+        background: none !important;
+        -webkit-background-clip: unset !important;
+        background-clip: unset !important;
+        color: var(--text-primary) !important;
+        animation: none !important;
+    }
+    .hero-greeting { opacity: 1 !important; transform: none !important; }
     .avatar-large { width: 120px; height: 120px; }
     .hero-stats {
         display: flex;

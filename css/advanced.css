@@ -340,6 +340,7 @@
 .section .project-card,
 .section .education-card,
 .section .cert-card,
+.section .blog-card,
 .section h2,
 .section .section-banner {
     opacity: 0;
@@ -350,6 +351,10 @@
 .child-visible {
     opacity: 1 !important;
     transform: translateY(0) !important;
+}
+
+.section-visible {
+    /* Marker class — enables child transitions */
 }
 
 /* Timeline reveal */
@@ -781,6 +786,7 @@
     .text-reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
     .section .about-card, .section .timeline-item, .section .skill-category,
     .section .project-card, .section .education-card, .section .cert-card,
+    .section .blog-card,
     .section h2, .section .section-banner {
         opacity: 1 !important; transform: none !important; transition: none !important;
     }

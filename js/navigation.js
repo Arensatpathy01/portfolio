@@ -7,6 +7,11 @@ const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav-links a');
 
 // ===== ACTIVE NAV LINK ON SCROLL =====
+// Sections without nav links — map to nearest parent
+const sectionNavMap = {
+    'architecture': '#blog'  // Architecture is between blog and contact, map to blog
+};
+
 function updateActiveLink() {
     let current = '';
     sections.forEach(section => {
@@ -16,9 +21,12 @@ function updateActiveLink() {
         }
     });
 
+    // Map sections without nav links to the nearest one
+    const mapped = sectionNavMap[current] || `#${current}`;
+
     navLinks.forEach(link => {
         link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
+        if (link.getAttribute('href') === mapped || link.getAttribute('href') === `#${current}`) {
             link.classList.add('active');
         }
     });

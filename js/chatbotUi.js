@@ -12,6 +12,11 @@ const chatInputRow = document.getElementById('chatInputRow');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 
+// Guard: if any critical element is missing, bail out safely
+if (!chatbotToggle || !chatbotWindow || !chatbotClose || !chatbotMessages || !chatInput || !chatSend) {
+    console.warn('ChatbotUI: Missing DOM elements, skipping init.');
+} else {
+
 // Toggle chatbot window
 chatbotToggle.addEventListener('click', () => {
     chatbotWindow.classList.toggle('open');
@@ -117,3 +122,5 @@ function removeTyping(id) {
     const el = document.getElementById(id);
     if (el) el.remove();
 }
+
+} // end null guard

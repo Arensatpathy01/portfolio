@@ -235,3 +235,13 @@
     border-radius: 50%;
     object-fit: cover;
 }
+
+/* ── Visitor greeting animation ── */
+.hero-greeting.greeting-animated {
+    animation: greetSlideIn 0.6s ease-out both;
+}
+
+@keyframes greetSlideIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

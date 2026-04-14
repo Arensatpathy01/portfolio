@@ -9,15 +9,21 @@
     <meta name="author" content="Aren Satpathy" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Aren Satpathy | Software Engineer 2" />
-    <meta property="og:description" content="Interactive 3D portfolio showcasing projects, skills, and experience in software engineering." />
+    <meta property="og:title" content="Aren Satpathy | Software Engineer 2 at NetApp" />
+    <meta property="og:description" content="Interactive 3D portfolio — C++, Embedded Systems, DevOps. 3+ years at NetApp, Boeing & Cognizant." />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="profile.jpg" />
+    <meta property="og:image" content="images/og-preview.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://arensatpathy01.github.io/portfolio/" />
+    <meta property="og:site_name" content="Aren Satpathy — Portfolio" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Aren Satpathy | Software Engineer 2" />
+    <meta name="twitter:title" content="Aren Satpathy | Software Engineer 2 at NetApp" />
     <meta name="twitter:description" content="Interactive 3D portfolio — C++, Embedded Systems, DevOps" />
+    <meta name="twitter:image" content="images/og-preview.png" />
 
     <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -39,6 +45,7 @@
     <link rel="stylesheet" href="css/3d-effects.css" />
     <link rel="stylesheet" href="css/advanced.css" />
     <link rel="stylesheet" href="css/backend-features.css" />
+    <link rel="stylesheet" href="css/resumeViewer.css" />
     <link rel="stylesheet" href="css/responsive.css" />
 
     <!-- EmailJS SDK (free tier: 200 emails/month) -->
@@ -71,6 +78,7 @@
             <li><a href="#projects"><i class="fas fa-laptop-code"></i><span>Projects</span></a></li>
             <li><a href="#education"><i class="fas fa-graduation-cap"></i><span>Education</span></a></li>
             <li><a href="#certifications"><i class="fas fa-certificate"></i><span>Certifications</span></a></li>
+            <li><a href="#testimonials"><i class="fas fa-quote-left"></i><span>Testimonials</span></a></li>
             <li><a href="#blog"><i class="fas fa-blog"></i><span>Blog</span></a></li>
             <li><a href="#contact"><i class="fas fa-paper-plane"></i><span>Contact</span></a></li>
             <li><a href="features.html"><i class="fas fa-book-open"></i><span>Features Guide</span></a></li>
@@ -166,7 +174,7 @@
 
         <!-- ABOUT -->
         <section class="section" id="about">
-            <h2 class="section-title"><span class="emoji">👨‍💼</span> About Me</h2>
+            <h2 class="section-title">About Me</h2>
             <div class="section-banner">
                 <img src="images/workspace.jpg" alt="Developer workspace" loading="lazy" />
                 <div class="banner-overlay"></div>
@@ -221,7 +229,7 @@
         <!-- EXPERIENCE -->
         <section class="section" id="experience">
             <div class="model-showcase model-showcase-section" id="model-experience"></div>
-            <h2 class="section-title"><span class="emoji">💼</span> Experience</h2>
+            <h2 class="section-title">Experience</h2>
             <div class="section-banner">
                 <img src="images/code-bg.jpg" alt="Code on screen" loading="lazy" />
                 <div class="banner-overlay"></div>
@@ -312,7 +320,7 @@
         <!-- SKILLS -->
         <section class="section" id="skills">
             <div class="model-showcase model-showcase-section" id="model-skills"></div>
-            <h2 class="section-title"><span class="emoji">🛠</span> Technical Skills</h2>
+            <h2 class="section-title">Technical Skills</h2>
             <div class="section-banner">
                 <img src="images/circuit.jpg" alt="Circuit board" loading="lazy" />
                 <div class="banner-overlay"></div>
@@ -367,7 +375,7 @@
         <!-- PROJECTS -->
         <section class="section" id="projects">
             <div class="model-showcase model-showcase-section" id="model-projects"></div>
-            <h2 class="section-title"><span class="emoji">💻</span> Projects</h2>
+            <h2 class="section-title">Projects</h2>
             <!-- Projects loaded dynamically from data/projects.json -->
             <div id="projectsGrid">
                 <!-- Fallback: shown if JS fails -->
@@ -395,7 +403,7 @@
 
         <!-- EDUCATION -->
         <section class="section" id="education">
-            <h2 class="section-title"><span class="emoji">🎓</span> Education</h2>
+            <h2 class="section-title">Education</h2>
             <div class="section-banner">
                 <img src="images/graduation.jpg" alt="Education" loading="lazy" />
                 <div class="banner-overlay"></div>
@@ -433,7 +441,7 @@
 
         <!-- CERTIFICATIONS -->
         <section class="section" id="certifications">
-            <h2 class="section-title"><span class="emoji">🏅</span> Certifications & Achievements</h2>
+            <h2 class="section-title">Certifications & Achievements</h2>
             <div class="cert-grid">
                 <a href="https://learn.microsoft.com/en-us/credentials/certifications/azure-fundamentals/" target="_blank" class="cert-card-link">
                     <div class="cert-card">
@@ -456,9 +464,26 @@
             </div>
         </section>
 
+        <!-- TESTIMONIALS -->
+        <section class="section" id="testimonials">
+            <h2 class="section-title">Testimonials</h2>
+            <div class="testimonials-wrapper">
+                <button class="testimonial-nav testimonial-prev" aria-label="Previous testimonial">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="testimonials-track" id="testimonialsTrack">
+                    <!-- Cards injected by JS -->
+                </div>
+                <button class="testimonial-nav testimonial-next" aria-label="Next testimonial">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="testimonial-dots" id="testimonialDots"></div>
+        </section>
+
         <!-- BLOG -->
         <section class="section" id="blog">
-            <h2 class="section-title"><span class="emoji">📝</span> Blog & Insights</h2>
+            <h2 class="section-title">Blog & Insights</h2>
             <div id="blogGrid">
                 <!-- Blog posts loaded dynamically from data/blog.json -->
             </div>
@@ -466,7 +491,7 @@
 
         <!-- CONTACT / QUERY -->
         <section class="section" id="contact">
-            <h2 class="section-title"><span class="emoji">📬</span> Send Me a Query</h2>
+            <h2 class="section-title">Send Me a Query</h2>
             <div class="contact-form-wrapper">
                 <div class="contact-form-info glass-card">
                     <div class="contact-image">
@@ -539,7 +564,7 @@
                 <a href="mailto:aren.saty@gmail.com"><i class="fas fa-envelope"></i></a>
                 <a href="features.html" title="Features Guide"><i class="fas fa-book-open"></i></a>
             </div>
-            <p>&copy; <script>document.write(new Date().getFullYear())</script> Aren Satpathy · Built with ❤️ and JavaScript</p>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Aren Satpathy</p>
         </div>
     </footer>
 
@@ -575,6 +600,7 @@
     </div>
 
     <!-- Scripts (modular) -->
+    <script src="js/visitorGreeting.js"></script>
     <script src="js/typing.js"></script>
     <script src="js/counters.js"></script>
     <script src="js/scroll.js"></script>
@@ -597,11 +623,17 @@
     <script src="js/achievements.js"></script>
 
     <!-- Backend / Service Features -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js"></script>
     <script src="js/emailService.js"></script>
     <script src="js/githubStats.js"></script>
     <script src="js/projectLoader.js"></script>
     <script src="js/resumeTracker.js"></script>
+    <script src="js/resumeViewer.js"></script>
+    <script src="js/testimonials.js"></script>
     <script src="js/blogLoader.js"></script>
+    <script src="js/blogEngagement.js"></script>
+    <script src="js/visitorAnalytics.js"></script>
     <script src="js/analytics.js"></script>
 </body>
 </html>

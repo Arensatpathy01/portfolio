@@ -600,6 +600,12 @@
         <a href="#f-cursor"><i class="fas fa-mouse-pointer"></i> Custom Cursor</a>
         <a href="#f-transitions"><i class="fas fa-magic"></i> Page Transitions</a>
         <a href="#f-analytics"><i class="fas fa-chart-bar"></i> Analytics</a>
+        <a href="#f-greeting"><i class="fas fa-sun"></i> Visitor Greeting</a>
+        <a href="#f-pdfviewer"><i class="fas fa-file-pdf"></i> PDF Resume Viewer</a>
+        <a href="#f-ogimage"><i class="fas fa-share-alt"></i> OG Preview Image</a>
+        <a href="#f-testimonials"><i class="fas fa-quote-left"></i> Testimonials</a>
+        <a href="#f-admin"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+        <a href="#f-supabase"><i class="fas fa-database"></i> Supabase Backend</a>
         <a href="#f-arch"><i class="fas fa-sitemap"></i> Architecture</a>
         <a href="#f-seo"><i class="fas fa-search"></i> SEO & Accessibility</a>
         <a href="#f-cost"><i class="fas fa-coins"></i> Cost Summary</a>
@@ -626,6 +632,12 @@
             <a href="#f-cursor"><i class="fas fa-mouse-pointer"></i> Custom Cursor</a>
             <a href="#f-transitions"><i class="fas fa-magic"></i> Page Transitions</a>
             <a href="#f-analytics"><i class="fas fa-chart-bar"></i> Analytics</a>
+            <a href="#f-greeting"><i class="fas fa-sun"></i> Visitor Greeting</a>
+            <a href="#f-pdfviewer"><i class="fas fa-file-pdf"></i> PDF Resume Viewer</a>
+            <a href="#f-ogimage"><i class="fas fa-share-alt"></i> OG Preview Image</a>
+            <a href="#f-testimonials"><i class="fas fa-quote-left"></i> Testimonials</a>
+            <a href="#f-admin"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+            <a href="#f-supabase"><i class="fas fa-database"></i> Supabase Backend</a>
             <a href="#f-arch"><i class="fas fa-sitemap"></i> Architecture</a>
             <a href="#f-seo"><i class="fas fa-search"></i> SEO & Accessibility</a>
             <a href="#f-cost"><i class="fas fa-coins"></i> Cost Summary</a>
@@ -644,6 +656,7 @@
                     <span class="f-badge f-badge-purple"><i class="fas fa-robot"></i> AI Chatbot</span>
                     <span class="f-badge f-badge-green"><i class="fab fa-github"></i> GitHub API</span>
                     <span class="f-badge f-badge-amber"><i class="fas fa-chart-bar"></i> Analytics</span>
+                    <span class="f-badge f-badge-green"><i class="fas fa-database"></i> Supabase</span>
                 </div>
             </section>
 
@@ -875,6 +888,132 @@
                 </ul>
             </div>
 
+            <!-- Visitor Greeting -->
+            <div class="feature-block" id="f-greeting">
+                <h2><span class="feature-icon fi-amber"><i class="fas fa-sun"></i></span> Time-Based Visitor Greeting</h2>
+                <p>The hero greeting dynamically changes based on the visitor's local time of day, creating a personal first impression.</p>
+                <table class="ftable">
+                    <thead><tr><th>Time Range</th><th>Greeting</th><th>Icon</th></tr></thead>
+                    <tbody>
+                        <tr><td>5 AM – 7 AM</td><td>Up early? I'm</td><td>🌅</td></tr>
+                        <tr><td>7 AM – 12 PM</td><td>Good morning! I'm</td><td>☀️</td></tr>
+                        <tr><td>12 PM – 5 PM</td><td>Good afternoon! I'm</td><td>🌤️</td></tr>
+                        <tr><td>5 PM – 9 PM</td><td>Good evening! I'm</td><td>🌙</td></tr>
+                        <tr><td>9 PM – 5 AM</td><td>Working late? I'm</td><td>🦉</td></tr>
+                    </tbody>
+                </table>
+                <ul>
+                    <li><strong>File:</strong> <code>js/visitorGreeting.js</code></li>
+                    <li><strong>Animation:</strong> Slide-in with 0.6s ease-out</li>
+                    <li><strong>Auto-init:</strong> Runs on DOMContentLoaded</li>
+                </ul>
+            </div>
+
+            <!-- PDF Resume Viewer -->
+            <div class="feature-block" id="f-pdfviewer">
+                <h2><span class="feature-icon fi-blue"><i class="fas fa-file-pdf"></i></span> PDF Resume Viewer (Modal)</h2>
+                <p>In addition to downloading the resume, visitors can now preview it inline in a fullscreen modal overlay.</p>
+                <ul>
+                    <li><strong>Trigger:</strong> "View" button auto-injected next to every resume download button</li>
+                    <li><strong>Display:</strong> Fullscreen modal with iframe PDF viewer</li>
+                    <li><strong>Header:</strong> Title bar with Download and Close (×) buttons</li>
+                    <li><strong>Close:</strong> Click backdrop, press <kbd>Esc</kbd>, or click the × button</li>
+                    <li><strong>Pre-check:</strong> HEAD request verifies the PDF exists before opening</li>
+                    <li><strong>Fallback:</strong> If iframe can't render PDF, shows download + open-in-new-tab buttons</li>
+                    <li><strong>Responsive:</strong> Full-width on mobile, 900px max on desktop</li>
+                    <li><strong>Files:</strong> <code>js/resumeViewer.js</code> + <code>css/resumeViewer.css</code></li>
+                </ul>
+            </div>
+
+            <!-- Open Graph Preview Image -->
+            <div class="feature-block" id="f-ogimage">
+                <h2><span class="feature-icon fi-green"><i class="fas fa-share-alt"></i></span> Open Graph Preview Image</h2>
+                <p>Custom 1200×630 preview image for rich social media previews when sharing on LinkedIn, Twitter, Slack, etc.</p>
+                <ul>
+                    <li><strong>Image:</strong> <code>images/og-preview.png</code> — dark-themed with name, title, skills tags, stats, and decorative code block</li>
+                    <li><strong>Meta tags:</strong> <code>og:image</code>, <code>og:image:type</code>, <code>og:image:width/height</code>, <code>og:url</code>, <code>og:site_name</code></li>
+                    <li><strong>Twitter:</strong> <code>twitter:image</code> for summary_large_image card</li>
+                    <li><strong>SVG source:</strong> <code>images/og-preview.svg</code> — editable vector version</li>
+                </ul>
+            </div>
+
+            <!-- Testimonials Carousel -->
+            <div class="feature-block" id="f-testimonials">
+                <h2><span class="feature-icon fi-purple"><i class="fas fa-quote-left"></i></span> Testimonials Carousel</h2>
+                <p>A new section between Certifications and Blog featuring professional testimonials in a rotating carousel.</p>
+                <ul>
+                    <li><strong>Location:</strong> "Testimonials" section, accessible from sidebar nav</li>
+                    <li><strong>Data source:</strong> <code>data/testimonials.json</code> — 5 testimonial entries</li>
+                    <li><strong>Auto-play:</strong> Rotates every 6 seconds, pauses on hover</li>
+                    <li><strong>Navigation:</strong> Left/right arrow buttons + clickable dot indicators</li>
+                    <li><strong>Mobile:</strong> Swipe left/right on touch devices (50px threshold)</li>
+                    <li><strong>Cards:</strong> Glass-morphism cards with quote icon, text, avatar icon, name & role</li>
+                    <li><strong>Animation:</strong> Fade + translateX transition between cards</li>
+                    <li><strong>Files:</strong> <code>js/testimonials.js</code> + <code>data/testimonials.json</code></li>
+                </ul>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div class="feature-block" id="f-admin">
+                <h2><span class="feature-icon fi-pink"><i class="fas fa-tachometer-alt"></i></span> Admin Dashboard</h2>
+                <p>A private analytics dashboard at <code>admin.html</code> with Supabase email/password authentication.</p>
+                <div class="sub-cards">
+                    <div class="sub-card">
+                        <h4><i class="fas fa-shield-alt"></i> Auth Gate</h4>
+                        <p>Email + password sign-in via Supabase Auth. Session persists across page reloads.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-chart-line"></i> Stats Cards</h4>
+                        <p>Page views, resume downloads, messages received, unique chat sessions.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-inbox"></i> Messages Inbox</h4>
+                        <p>All contact form submissions with name, email, subject, message, and timestamp.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-layer-group"></i> Section Engagement</h4>
+                        <p>Aggregated section views with percentage bars showing relative popularity.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-comments"></i> Chat Logs</h4>
+                        <p>All chatbot conversations with session IDs, roles (user/bot), and timestamps.</p>
+                    </div>
+                    <div class="sub-card">
+                        <h4><i class="fas fa-blog"></i> Blog Stats</h4>
+                        <p>Per-post reads and likes from the engagement tracking system.</p>
+                    </div>
+                </div>
+                <ul>
+                    <li><strong>URL:</strong> <code>admin.html</code> (not linked from main site, <code>noindex</code> meta tag)</li>
+                    <li><strong>Setup:</strong> Create a user in your Supabase project → Authentication → Users</li>
+                </ul>
+            </div>
+
+            <!-- Supabase Backend -->
+            <div class="feature-block" id="f-supabase">
+                <h2><span class="feature-icon fi-green"><i class="fas fa-database"></i></span> Supabase Backend Integration</h2>
+                <p>Free-tier Supabase project provides a real database backend for analytics and persistence — no server required.</p>
+                <table class="ftable">
+                    <thead><tr><th>Feature</th><th>Table</th><th>Data Stored</th></tr></thead>
+                    <tbody>
+                        <tr><td>Resume Downloads</td><td><code>counters</code></td><td>Global download count via RPC</td></tr>
+                        <tr><td>Contact Messages</td><td><code>messages</code></td><td>Name, email, subject, message</td></tr>
+                        <tr><td>Page Views</td><td><code>page_views</code></td><td>Page, referrer, user agent, screen, fingerprint</td></tr>
+                        <tr><td>Section Tracking</td><td><code>section_views</code></td><td>Section ID, visitor fingerprint</td></tr>
+                        <tr><td>Blog Reads</td><td><code>blog_stats</code></td><td>Per-post read and like counts</td></tr>
+                        <tr><td>Blog Likes</td><td><code>blog_likes</code></td><td>Post slug, visitor fingerprint</td></tr>
+                        <tr><td>Chat Logs</td><td><code>chat_logs</code></td><td>Session ID, role, message text</td></tr>
+                    </tbody>
+                </table>
+                <ul>
+                    <li><strong>Client:</strong> <code>js/supabaseClient.js</code> — central IIFE module with all DB operations</li>
+                    <li><strong>SDK:</strong> Loaded via CDN: <code>@supabase/supabase-js@2</code></li>
+                    <li><strong>RLS:</strong> Row Level Security enabled on all tables with anonymous insert policies</li>
+                    <li><strong>Schema:</strong> <code>supabase-schema.sql</code> — run once in Supabase SQL Editor</li>
+                    <li><strong>Fallback:</strong> All features gracefully degrade to localStorage if Supabase is unavailable</li>
+                </ul>
+            </div>
+
             <!-- Architecture -->
             <div class="feature-block" id="f-arch">
                 <h2><span class="feature-icon fi-blue"><i class="fas fa-sitemap"></i></span> Architecture Overview</h2>
@@ -901,6 +1040,12 @@
                     </div>
                     <div class="arch-arrow"><i class="fas fa-arrow-down"></i></div>
                     <div class="arch-row">
+                        <span class="arch-tag"><i class="fas fa-database"></i> Supabase</span>
+                        <span class="arch-tag"><i class="fas fa-shield-alt"></i> RLS Policies</span>
+                        <span class="arch-tag"><i class="fas fa-server"></i> PostgreSQL</span>
+                    </div>
+                    <div class="arch-arrow"><i class="fas fa-arrow-down"></i></div>
+                    <div class="arch-row">
                         <span class="arch-tag"><i class="fab fa-github"></i> GitHub Pages</span>
                         <span class="arch-tag"><i class="fas fa-shield-alt"></i> HTTPS / CDN</span>
                         <span class="arch-tag"><i class="fas fa-database"></i> localStorage</span>
@@ -913,8 +1058,8 @@
                 <h2><span class="feature-icon fi-green"><i class="fas fa-search"></i></span> SEO & Accessibility</h2>
                 <ul>
                     <li><strong>Meta tags:</strong> Title, description, keywords, author</li>
-                    <li><strong>Open Graph:</strong> og:title, og:description, og:type, og:image</li>
-                    <li><strong>Twitter Card:</strong> summary_large_image with title and description</li>
+                    <li><strong>Open Graph:</strong> og:title, og:description, og:type, og:image (1200×630 PNG), og:url, og:site_name, og:image:type</li>
+                    <li><strong>Twitter Card:</strong> summary_large_image with title, description, and twitter:image</li>
                     <li><strong>Skip navigation:</strong> Hidden "Skip to main content" link (visible on Tab)</li>
                     <li><strong>ARIA:</strong> aria-hidden on decorative 3D background, aria-label on hero</li>
                     <li><strong>Reduced motion:</strong> All animations respect <code>prefers-reduced-motion: reduce</code></li>
@@ -935,7 +1080,10 @@
                         <tr><td>3D Models</td><td>Sketchfab / CDN</td><td class="free-tag">Free</td></tr>
                         <tr><td>Blog / Projects</td><td>Static JSON (upgradable)</td><td class="free-tag">Free</td></tr>
                         <tr><td>Hosting</td><td>GitHub Pages</td><td class="free-tag">Free</td></tr>
-                        <tr><td>Resume Tracking</td><td>localStorage</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Resume Tracking</td><td>Supabase + localStorage</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Backend / Analytics</td><td>Supabase (500 MB, 50K req/mo)</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Admin Dashboard</td><td>Supabase Auth</td><td class="free-tag">Free</td></tr>
+                        <tr><td>Testimonials / Greeting / PDF Viewer</td><td>Client-side JS</td><td class="free-tag">Free</td></tr>
                         <tr><td>Theme / Cursor / Achievements</td><td>Client-side JS</td><td class="free-tag">Free</td></tr>
                     </tbody>
                 </table>
@@ -956,6 +1104,10 @@
                         <tr><td>Resume PDF</td><td><code>resume/</code> folder</td><td>Add Aren_Satpathy_Resume.pdf</td></tr>
                         <tr><td>Gemini API</td><td>Browser localStorage</td><td>Set key <code>gemini_api_key</code></td></tr>
                         <tr><td>Profile Photo</td><td><code>profile.jpg</code></td><td>Replace with your photo (square, 400×400+)</td></tr>
+                        <tr><td>Supabase</td><td><code>js/supabaseClient.js</code></td><td>Set SUPABASE_URL and SUPABASE_ANON key</td></tr>
+                        <tr><td>Supabase Schema</td><td><code>supabase-schema.sql</code></td><td>Run in Supabase SQL Editor to create tables</td></tr>
+                        <tr><td>Admin Auth</td><td>Supabase Dashboard</td><td>Create a user in Authentication → Users</td></tr>
+                        <tr><td>Testimonials</td><td><code>data/testimonials.json</code></td><td>Edit testimonial entries (name, role, text)</td></tr>
                     </tbody>
                 </table>
             </div>

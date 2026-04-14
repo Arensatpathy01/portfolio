@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Senior Engineering Manager",
+        "role": "Engineering Leadership, NetApp",
+        "text": "Aren consistently delivers high-quality code and takes ownership of complex features. His work on real-time data streaming systems has been instrumental to our team's success.",
+        "avatar": "fas fa-user-tie"
+    },
+    {
+        "name": "Technical Lead",
+        "role": "Platform Team, NetApp",
+        "text": "A quick learner who dives deep into problems. Aren's contributions to our C++ codebase and CI/CD pipelines have significantly improved our development velocity.",
+        "avatar": "fas fa-user-cog"
+    },
+    {
+        "name": "Staff Engineer",
+        "role": "Embedded Systems, Boeing",
+        "text": "Aren brought fresh perspectives to our embedded systems work. His attention to detail and debugging skills made him a valuable contributor to mission-critical projects.",
+        "avatar": "fas fa-user-astronaut"
+    },
+    {
+        "name": "Team Lead",
+        "role": "Digital Engineering, Cognizant",
+        "text": "One of the most proactive engineers I've worked with. Aren's ability to learn new technologies quickly and apply them effectively set him apart from his peers.",
+        "avatar": "fas fa-user-shield"
+    },
+    {
+        "name": "Peer Engineer",
+        "role": "Storage Systems, NetApp",
+        "text": "Great collaborator and problem-solver. Aren is the go-to person when you need someone to debug a tricky issue or review complex code with fresh eyes.",
+        "avatar": "fas fa-user-friends"
+    }
+]

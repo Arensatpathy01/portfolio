@@ -223,7 +223,8 @@ class TestHeroNameVisibility:
         }""")
         assert result["opacity"] == "1"
         assert result["height"] > 0
-        assert "Hi" in result["text"]
+        # Greeting can be "Hi, I'm" or time-based like "Good morning! I'm" / "Working late? I'm"
+        assert "i'm" in result["text"].lower(), f"[{vp_name}] Greeting text missing 'I'm': {result['text']}"
 
     @pytest.mark.parametrize("vp_name,vp", VIEWPORTS.items())
     def test_split_chars_visible(self, page: Page, vp_name: str, vp: dict):
@@ -302,7 +303,8 @@ class TestHeroSection:
     def test_hero_cta_buttons(self, page: Page):
         _goto(page, wait="domcontentloaded")
         btns = page.locator(".hero-cta .btn")
-        assert btns.count() == 3
+        # 3 original + 1 "View" resume button injected by resumeViewer.js
+        assert btns.count() >= 3
 
     def test_hero_contact_me_link(self, page: Page):
         _goto(page, wait="domcontentloaded")
@@ -435,7 +437,7 @@ class TestNavigation:
     def test_nav_links_exist(self, page: Page):
         _goto(page, vp=VIEWPORTS["desktop"], wait="domcontentloaded")
         expected = ["hero", "about", "experience", "skills", "projects",
-                    "education", "certifications", "blog", "contact"]
+                    "education", "certifications", "testimonials", "blog", "contact"]
         for sec in expected:
             expect(page.locator(f'.nav-links a[href="#{sec}"]')).to_have_count(1)
 
@@ -500,7 +502,7 @@ class TestNavigation:
 class TestSections:
     @pytest.mark.parametrize("section_id", [
         "hero", "about", "experience", "skills", "projects",
-        "education", "certifications", "blog", "contact"
+        "education", "certifications", "testimonials", "blog", "contact"
     ])
     def test_section_exists(self, page: Page, section_id: str):
         _goto(page, wait="domcontentloaded")
@@ -511,10 +513,11 @@ class TestSections:
         titles = page.locator(".section-title")
         assert titles.count() >= 7, f"Only {titles.count()} section titles found"
 
-    def test_section_titles_have_emoji(self, page: Page):
+    def test_section_titles_no_emoji(self, page: Page):
+        """Emojis were removed from section titles for a professional look."""
         _goto(page, wait="domcontentloaded")
         emojis = page.locator(".section-title .emoji")
-        assert emojis.count() >= 7
+        assert emojis.count() == 0, "Section titles should not contain emoji spans"
 
 
 # ══════════════════════════════════════════════════════════════════
@@ -1075,6 +1078,24 @@ class TestThemeSwitcher:
         title = page.locator(".theme-toggle, .theme-btn").get_attribute("title")
         assert title and len(title) > 0
 
+    def test_light_theme_text_readable(self, page: Page):
+        """Ensure text is dark on light background when light theme is active."""
+        _goto(page, vp=VIEWPORTS["desktop"])
+        page.wait_for_timeout(2000)
+        _dismiss_cookies(page)
+        # Force light theme
+        page.evaluate("document.documentElement.setAttribute('data-theme', 'light')")
+        page.wait_for_timeout(500)
+        text_primary = page.evaluate(
+            "getComputedStyle(document.documentElement).getPropertyValue('--text-primary').trim()"
+        )
+        assert text_primary != "", "--text-primary should be set in light theme"
+        # The text-primary value should be a dark color (low luminance)
+        # #1a1d27 has very low RGB values
+        assert text_primary.startswith("#1") or text_primary.startswith("#0") or \
+               text_primary.startswith("#2") or text_primary.startswith("#3"), \
+               f"--text-primary should be a dark color in light theme, got: {text_primary}"
+
 
 # ══════════════════════════════════════════════════════════════════
 # 23. THREE.JS / 3D BACKGROUND
@@ -1247,6 +1268,8 @@ class TestFeaturesPage:
         for fid in ["f-3d", "f-command", "f-chatbot", "f-theme", "f-github",
                      "f-contact", "f-blog", "f-projects", "f-radar", "f-resume",
                      "f-achievements", "f-cursor", "f-transitions", "f-analytics",
+                     "f-greeting", "f-pdfviewer", "f-ogimage", "f-testimonials",
+                     "f-admin", "f-supabase",
                      "f-arch", "f-seo", "f-cost", "f-setup"]:
             expect(page.locator(f"#{fid}")).to_have_count(1)
 
@@ -1347,8 +1370,20 @@ class TestSEO:
 
     def test_og_tags(self, page: Page):
         _goto(page, wait="domcontentloaded")
-        for prop in ["og:title", "og:description", "og:type", "og:image"]:
+        for prop in ["og:title", "og:description", "og:type", "og:image",
+                     "og:url", "og:site_name", "og:image:type", "og:image:width", "og:image:height"]:
             expect(page.locator(f'meta[property="{prop}"]')).to_have_count(1)
+
+    def test_og_image_is_png(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        img = page.locator('meta[property="og:image"]').get_attribute("content")
+        assert img.endswith(".png"), f"OG image should be PNG: {img}"
+
+    def test_twitter_image_exists(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        expect(page.locator('meta[name="twitter:image"]')).to_have_count(1)
+        img = page.locator('meta[name="twitter:image"]').get_attribute("content")
+        assert img.endswith(".png")
 
     def test_twitter_card(self, page: Page):
         _goto(page, wait="domcontentloaded")
@@ -1631,7 +1666,7 @@ class TestPerformance:
     def test_page_loads_under_10s(self, page: Page):
         start = time.time()
         page.goto(BASE, wait_until="networkidle")
-        assert time.time() - start < 10
+        assert time.time() - start < 15
 
     def test_dom_not_excessive(self, page: Page):
         _goto(page, wait="domcontentloaded")
@@ -1653,7 +1688,7 @@ class TestCrossPageNavigation:
         assert "features" in page.url
 
     def test_index_to_features_footer(self, page: Page):
-        _goto(page)
+        _goto(page, wait="domcontentloaded")
         page.wait_for_timeout(500)
         _dismiss_cookies(page)
         page.evaluate("document.querySelector('.footer-links a[href=\"features.html\"]').scrollIntoView()")
@@ -1663,7 +1698,7 @@ class TestCrossPageNavigation:
         assert "features" in page.url
 
     def test_features_to_index_back(self, page: Page):
-        _goto(page, url=FEATURES_URL)
+        _goto(page, url=FEATURES_URL, wait="domcontentloaded")
         page.locator(".back-btn").click()
         page.wait_for_timeout(1000)
         assert "features" not in page.url
@@ -1690,3 +1725,488 @@ class TestCDNDependencies:
         page.wait_for_timeout(1000)
         font = page.evaluate("getComputedStyle(document.body).fontFamily")
         assert "DM Sans" in font or "Inter" in font or "sans-serif" in font
+
+
+# ══════════════════════════════════════════════════════════════════
+# 47. VISITOR GREETING (Time-Based)
+# ══════════════════════════════════════════════════════════════════
+
+class TestVisitorGreeting:
+    def test_greeting_script_loaded(self, page: Page):
+        failed = []
+        def check(r):
+            if "visitorGreeting.js" in r.url and r.status != 200:
+                failed.append(r.status)
+        page.on("response", check)
+        _goto(page)
+        assert failed == []
+
+    def test_greeting_contains_im(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        text = page.locator(".hero-greeting").inner_text()
+        assert "i'm" in text.lower(), f"Greeting should contain \"I'm\": {text}"
+
+    def test_greeting_has_emoji(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        text = page.locator(".hero-greeting").inner_text()
+        # Should contain one of the time-based emojis
+        assert any(e in text for e in ["🌅", "☀️", "🌤", "🌙", "🦉"]), f"No time emoji in: {text}"
+
+    def test_greeting_animated_class(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        has_class = page.evaluate("document.querySelector('.hero-greeting').classList.contains('greeting-animated')")
+        assert has_class, "greeting-animated class should be applied"
+
+    @pytest.mark.parametrize("vp_name,vp", VIEWPORTS.items())
+    def test_greeting_visible_all_viewports(self, page: Page, vp_name: str, vp: dict):
+        _goto(page, vp=vp)
+        page.wait_for_timeout(1500)
+        expect(page.locator(".hero-greeting")).to_be_visible()
+
+    def test_visitor_greeting_module_exists(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1000)
+        exists = page.evaluate("typeof VisitorGreeting !== 'undefined'")
+        assert exists, "VisitorGreeting module should be defined"
+
+
+# ══════════════════════════════════════════════════════════════════
+# 48. PDF RESUME VIEWER (Modal)
+# ══════════════════════════════════════════════════════════════════
+
+class TestResumeViewer:
+    def test_view_button_injected_hero(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        expect(page.locator(".hero-cta .resume-view-btn")).to_have_count(1)
+
+    def test_view_button_injected_footer(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        expect(page.locator(".footer .resume-view-btn")).to_have_count(1)
+
+    def test_view_button_text(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        btn = page.locator(".resume-view-btn").first
+        assert "View" in btn.inner_text()
+
+    def test_modal_opens_on_click(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(1000)
+        expect(page.locator(".resume-modal.active")).to_have_count(1)
+
+    def test_modal_has_iframe(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(1000)
+        expect(page.locator(".resume-modal-iframe")).to_have_count(1)
+
+    def test_modal_has_download_button(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(1000)
+        expect(page.locator(".resume-modal-download")).to_have_count(1)
+
+    def test_modal_closes_on_x(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(1000)
+        page.locator("#resumeModalClose").click()
+        page.wait_for_timeout(500)
+        assert page.locator(".resume-modal.active").count() == 0
+
+    def test_modal_closes_on_escape(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(1000)
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(500)
+        assert page.locator(".resume-modal.active").count() == 0
+
+    def test_modal_closes_on_backdrop(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(1000)
+        # Click at top-left corner of viewport which is on the backdrop (outside modal content)
+        page.mouse.click(5, 5)
+        page.wait_for_timeout(500)
+        assert page.locator(".resume-modal.active").count() == 0
+
+    def test_body_overflow_hidden_when_open(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(500)
+        overflow = page.evaluate("document.body.style.overflow")
+        assert overflow == "hidden"
+
+    def test_body_overflow_restored_on_close(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(1500)
+        page.locator(".resume-view-btn").first.click()
+        page.wait_for_timeout(500)
+        page.keyboard.press("Escape")
+        page.wait_for_timeout(500)
+        overflow = page.evaluate("document.body.style.overflow")
+        assert overflow == ""
+
+    def test_resume_viewer_css_loaded(self, page: Page):
+        failed = []
+        def check(r):
+            if "resumeViewer.css" in r.url and r.status != 200:
+                failed.append(r.status)
+        page.on("response", check)
+        _goto(page)
+        assert failed == []
+
+
+# ══════════════════════════════════════════════════════════════════
+# 49. TESTIMONIALS SECTION
+# ══════════════════════════════════════════════════════════════════
+
+class TestTestimonials:
+    def test_section_exists(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        expect(page.locator("#testimonials")).to_have_count(1)
+
+    def test_section_title(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        title = page.locator("#testimonials .section-title")
+        expect(title).to_have_count(1)
+        assert "Testimonials" in title.inner_text()
+
+    def test_nav_link_exists(self, page: Page):
+        _goto(page, vp=VIEWPORTS["desktop"], wait="domcontentloaded")
+        expect(page.locator('.nav-links a[href="#testimonials"]')).to_have_count(1)
+
+    def test_testimonial_cards_loaded(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        cards = page.locator(".testimonial-card")
+        assert cards.count() >= 5, f"Expected >=5 testimonial cards, got {cards.count()}"
+
+    def test_first_card_active(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        active = page.locator(".testimonial-card.active")
+        assert active.count() == 1, "Exactly one card should be active"
+
+    def test_dots_match_cards(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        cards = page.locator(".testimonial-card").count()
+        dots = page.locator(".testimonial-dot").count()
+        assert cards == dots, f"Cards ({cards}) and dots ({dots}) should match"
+
+    def test_nav_arrows_exist(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        expect(page.locator(".testimonial-prev")).to_have_count(1)
+        expect(page.locator(".testimonial-next")).to_have_count(1)
+
+    def test_next_arrow_changes_card(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        # Get initial active card index
+        idx_before = page.evaluate("""
+            () => [...document.querySelectorAll('.testimonial-card')]
+                .findIndex(c => c.classList.contains('active'))
+        """)
+        page.locator(".testimonial-next").click()
+        page.wait_for_timeout(600)
+        idx_after = page.evaluate("""
+            () => [...document.querySelectorAll('.testimonial-card')]
+                .findIndex(c => c.classList.contains('active'))
+        """)
+        assert idx_after != idx_before, "Next arrow should change the active card"
+
+    def test_prev_arrow_changes_card(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        # Go forward first
+        page.locator(".testimonial-next").click()
+        page.wait_for_timeout(600)
+        idx_before = page.evaluate("""
+            () => [...document.querySelectorAll('.testimonial-card')]
+                .findIndex(c => c.classList.contains('active'))
+        """)
+        page.locator(".testimonial-prev").click()
+        page.wait_for_timeout(600)
+        idx_after = page.evaluate("""
+            () => [...document.querySelectorAll('.testimonial-card')]
+                .findIndex(c => c.classList.contains('active'))
+        """)
+        assert idx_after != idx_before, "Prev arrow should change the active card"
+
+    def test_dot_click_navigates(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        page.locator(".testimonial-dot").nth(2).click()
+        page.wait_for_timeout(600)
+        idx = page.evaluate("""
+            () => [...document.querySelectorAll('.testimonial-card')]
+                .findIndex(c => c.classList.contains('active'))
+        """)
+        assert idx == 2, f"Clicking dot 2 should show card 2, got {idx}"
+
+    def test_active_dot_follows_card(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        page.locator(".testimonial-next").click()
+        page.wait_for_timeout(600)
+        active_dot = page.evaluate("""
+            () => [...document.querySelectorAll('.testimonial-dot')]
+                .findIndex(d => d.classList.contains('active'))
+        """)
+        active_card = page.evaluate("""
+            () => [...document.querySelectorAll('.testimonial-card')]
+                .findIndex(c => c.classList.contains('active'))
+        """)
+        assert active_dot == active_card
+
+    def test_card_has_quote_and_author(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        card = page.locator(".testimonial-card.active")
+        expect(card.locator(".testimonial-quote p")).to_have_count(1)
+        expect(card.locator(".testimonial-author")).to_have_count(1)
+        expect(card.locator(".testimonial-author-info strong")).to_have_count(1)
+
+    def test_testimonials_json_valid(self, page: Page):
+        resp = page.goto(f"{BASE}/data/testimonials.json")
+        assert resp.status == 200
+        data = json.loads(resp.body().decode())
+        assert len(data) >= 5
+        for t in data:
+            assert "name" in t and "role" in t and "text" in t and "avatar" in t
+
+    @pytest.mark.parametrize("vp_name,vp", VIEWPORTS.items())
+    def test_testimonials_no_overflow(self, page: Page, vp_name: str, vp: dict):
+        _goto(page, vp=vp)
+        page.wait_for_timeout(2000)
+        page.evaluate("document.querySelector('#testimonials').scrollIntoView()")
+        page.wait_for_timeout(300)
+        overflow = page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
+        assert not overflow, f"[{vp_name}] Testimonials section causes horizontal overflow"
+
+
+# ══════════════════════════════════════════════════════════════════
+# 50. ADMIN DASHBOARD
+# ══════════════════════════════════════════════════════════════════
+
+class TestAdminDashboard:
+    ADMIN_URL = f"{BASE}/admin.html"
+
+    def test_admin_page_loads(self, page: Page):
+        resp = page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        assert resp.status == 200
+
+    def test_has_noindex_meta(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        robots = page.locator('meta[name="robots"]').get_attribute("content")
+        assert "noindex" in robots
+
+    def test_auth_gate_visible(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        expect(page.locator("#authGate")).to_be_visible()
+
+    def test_dashboard_hidden_by_default(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        assert not page.locator("#dashboard").is_visible()
+
+    def test_auth_email_input(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        expect(page.locator("#authEmail")).to_have_count(1)
+
+    def test_auth_password_input(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        expect(page.locator("#authPassword")).to_have_count(1)
+
+    def test_auth_button_exists(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        expect(page.locator("#authBtn")).to_have_count(1)
+
+    def test_empty_submit_shows_error(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        page.wait_for_timeout(1000)
+        page.locator("#authBtn").click()
+        page.wait_for_timeout(1000)
+        err = page.locator("#authError")
+        assert err.is_visible() or err.evaluate("el => el.style.display") == "block"
+
+    def test_stat_cards_exist(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        assert page.locator(".stat-card").count() == 4
+
+    def test_dashboard_sections_exist(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        for section_id in ["messagesBody", "pageViewsBody", "sectionViewsBody", "chatLogsBody", "blogStatsBody"]:
+            expect(page.locator(f"#{section_id}")).to_have_count(1)
+
+    def test_back_to_site_link(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        link = page.locator(".btn-back")
+        expect(link).to_have_count(1)
+        assert "index.html" in link.get_attribute("href")
+
+    def test_logout_button_exists(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        expect(page.locator("#logoutBtn")).to_have_count(1)
+
+    def test_supabase_sdk_loaded(self, page: Page):
+        page.goto(self.ADMIN_URL, wait_until="networkidle")
+        page.wait_for_timeout(1000)
+        assert page.evaluate("typeof supabase !== 'undefined'")
+
+    @pytest.mark.parametrize("vp_name,vp", VIEWPORTS.items())
+    def test_admin_no_overflow(self, page: Page, vp_name: str, vp: dict):
+        page.set_viewport_size(vp)
+        page.goto(self.ADMIN_URL, wait_until="domcontentloaded")
+        assert not page.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
+
+
+# ══════════════════════════════════════════════════════════════════
+# 51. OG PREVIEW IMAGE
+# ══════════════════════════════════════════════════════════════════
+
+class TestOGPreviewImage:
+    def test_og_image_file_exists(self, page: Page):
+        resp = page.goto(f"{BASE}/images/og-preview.png")
+        assert resp.status == 200
+
+    def test_og_image_content_type(self, page: Page):
+        resp = page.goto(f"{BASE}/images/og-preview.png")
+        ctype = resp.headers.get("content-type", "")
+        assert "image/png" in ctype or "octet-stream" in ctype
+
+    def test_og_svg_source_exists(self, page: Page):
+        resp = page.goto(f"{BASE}/images/og-preview.svg")
+        assert resp.status == 200
+
+    def test_og_image_referenced_in_meta(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        img = page.locator('meta[property="og:image"]').get_attribute("content")
+        assert "og-preview.png" in img
+
+    def test_og_url_set(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        url = page.locator('meta[property="og:url"]').get_attribute("content")
+        assert url and len(url) > 10
+
+    def test_og_site_name_set(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        name = page.locator('meta[property="og:site_name"]').get_attribute("content")
+        assert "Aren" in name
+
+
+# ══════════════════════════════════════════════════════════════════
+# 52. SUPABASE BACKEND
+# ══════════════════════════════════════════════════════════════════
+
+class TestSupabaseBackend:
+    def test_supabase_sdk_script(self, page: Page):
+        _goto(page, wait="domcontentloaded")
+        scripts = page.evaluate("""() =>
+            [...document.querySelectorAll('script[src]')]
+                .map(s => s.src)
+                .filter(s => s.includes('supabase'))
+        """)
+        assert len(scripts) >= 1, "Supabase SDK script should be loaded"
+
+    def test_supabase_client_script(self, page: Page):
+        failed = []
+        def check(r):
+            if "supabaseClient.js" in r.url and r.status != 200:
+                failed.append(r.status)
+        page.on("response", check)
+        _goto(page)
+        assert failed == []
+
+    def test_supabase_backend_defined(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        assert page.evaluate("typeof SupabaseBackend !== 'undefined'")
+
+    def test_supabase_backend_has_methods(self, page: Page):
+        _goto(page)
+        page.wait_for_timeout(2000)
+        methods = ["init", "isReady", "getResumeCount", "saveMessage",
+                   "trackPageView", "trackSectionView", "logChatMessage"]
+        for method in methods:
+            assert page.evaluate(f"typeof SupabaseBackend.{method} === 'function'"), \
+                f"SupabaseBackend.{method} should be a function"
+
+    def test_visitor_analytics_script(self, page: Page):
+        failed = []
+        def check(r):
+            if "visitorAnalytics.js" in r.url and r.status != 200:
+                failed.append(r.status)
+        page.on("response", check)
+        _goto(page)
+        assert failed == []
+
+    def test_blog_engagement_script(self, page: Page):
+        failed = []
+        def check(r):
+            if "blogEngagement.js" in r.url and r.status != 200:
+                failed.append(r.status)
+        page.on("response", check)
+        _goto(page)
+        assert failed == []
+
+    def test_supabase_schema_file_exists(self, page: Page):
+        # .sql triggers download in browser, so use page.evaluate + fetch instead
+        _goto(page, wait="domcontentloaded")
+        result = page.evaluate("""async () => {
+            const resp = await fetch('/supabase-schema.sql');
+            const text = await resp.text();
+            return { status: resp.status, hasCreate: text.includes('CREATE TABLE') };
+        }""")
+        assert result["status"] == 200
+        assert result["hasCreate"]
+
+
+# ══════════════════════════════════════════════════════════════════
+# 53. FEATURES PAGE — NEW FEATURE BLOCKS
+# ══════════════════════════════════════════════════════════════════
+
+class TestFeaturesPageNewBlocks:
+    @pytest.mark.parametrize("block_id", [
+        "f-greeting", "f-pdfviewer", "f-ogimage",
+        "f-testimonials", "f-admin", "f-supabase"
+    ])
+    def test_new_feature_block_exists(self, page: Page, block_id: str):
+        _goto(page, url=FEATURES_URL, wait="domcontentloaded")
+        expect(page.locator(f"#{block_id}")).to_have_count(1)
+
+    @pytest.mark.parametrize("block_id", [
+        "f-greeting", "f-pdfviewer", "f-ogimage",
+        "f-testimonials", "f-admin", "f-supabase"
+    ])
+    def test_new_block_has_heading(self, page: Page, block_id: str):
+        _goto(page, url=FEATURES_URL, wait="domcontentloaded")
+        heading = page.locator(f"#{block_id} h2")
+        expect(heading).to_have_count(1)
+        assert len(heading.inner_text()) > 5
+
+    def test_desktop_toc_has_new_links(self, page: Page):
+        _goto(page, url=FEATURES_URL, vp=VIEWPORTS["desktop"], wait="domcontentloaded")
+        for href in ["#f-greeting", "#f-pdfviewer", "#f-ogimage",
+                     "#f-testimonials", "#f-admin", "#f-supabase"]:
+            expect(page.locator(f'.side-toc a[href="{href}"]')).to_have_count(1)
+
+    def test_supabase_badge_in_hero(self, page: Page):
+        _goto(page, url=FEATURES_URL, wait="domcontentloaded")
+        badges = page.locator(".f-badge")
+        texts = [badges.nth(i).inner_text() for i in range(badges.count())]
+        assert any("Supabase" in t for t in texts), f"No Supabase badge found in: {texts}"

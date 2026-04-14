@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Aren Satpathy Portfolio</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        /* ── Variables ── */
+        :root {
+            --bg: #0b0d12;
+            --bg-card: #12151c;
+            --bg-card-hover: #181c26;
+            --accent: #60a5fa;
+            --accent-hover: #93c5fd;
+            --accent-glow: rgba(96,165,250,0.12);
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border: rgba(96,165,250,0.08);
+            --danger: #f87171;
+            --success: #34d399;
+            --warning: #fbbf24;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ── Auth Gate ── */
+        .auth-gate {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .auth-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2.5rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .auth-card h1 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-card p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .auth-card .icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            font-family: inherit;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--accent);
+            color: #0b0d12;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .auth-btn:hover { background: var(--accent-hover); }
+
+        .auth-error {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.75rem;
+            display: none;
+        }
+
+        /* ── Dashboard ── */
+        .dashboard { display: none; }
+
+        .dashboard.visible { display: block; }
+
+        .dash-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2rem;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .dash-header h1 {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dash-header h1 i { color: var(--accent); }
+
+        .dash-actions { display: flex; gap: 0.75rem; align-items: center; }
+
+        .dash-actions a, .dash-actions button {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .btn-back {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .btn-back:hover { border-color: var(--accent); color: var(--accent); }
+
+        .btn-logout {
+            background: rgba(248,113,113,0.1);
+            border: 1px solid rgba(248,113,113,0.2);
+            color: var(--danger);
+        }
+
+        .btn-logout:hover { background: rgba(248,113,113,0.2); }
+
+        /* ── Stats Grid ── */
+        .dash-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(96,165,250,0.2);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .stat-card .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .icon-blue { background: var(--accent-glow); color: var(--accent); }
+        .icon-green { background: rgba(52,211,153,0.12); color: var(--success); }
+        .icon-amber { background: rgba(251,191,36,0.12); color: var(--warning); }
+        .icon-pink { background: rgba(249,168,212,0.12); color: #f9a8d4; }
+
+        /* ── Tables ── */
+        .dash-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .dash-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dash-section-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dash-section-header h2 i { color: var(--accent); }
+
+        .refresh-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        .dash-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .dash-table th {
+            text-align: left;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(0,0,0,0.15);
+        }
+
+        .dash-table td {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.88rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+
+        .dash-table tr:hover td { background: rgba(96,165,250,0.02); }
+
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-blue { background: var(--accent-glow); color: var(--accent); }
+        .badge-green { background: rgba(52,211,153,0.12); color: var(--success); }
+
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .empty-state i { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+
+        /* ── Loading ── */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .loading i { animation: spin 1s linear infinite; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .dash-container { padding: 1rem; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .dash-header { padding: 1rem; flex-wrap: wrap; gap: 0.75rem; }
+            .dash-table { font-size: 0.8rem; }
+            .dash-table th, .dash-table td { padding: 0.5rem 0.75rem; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Truncate long text */
+        .truncate {
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════ AUTH GATE ═══════ -->
+<div class="auth-gate" id="authGate">
+    <div class="auth-card">
+        <div class="icon"><i class="fas fa-shield-alt"></i></div>
+        <h1>Admin Dashboard</h1>
+        <p>Sign in with your Supabase email to access portfolio analytics.</p>
+        <input type="email" class="auth-input" id="authEmail" placeholder="Email" autocomplete="email" />
+        <input type="password" class="auth-input" id="authPassword" placeholder="Password" autocomplete="current-password" />
+        <button class="auth-btn" id="authBtn"><i class="fas fa-sign-in-alt"></i> Sign In</button>
+        <div class="auth-error" id="authError"></div>
+    </div>
+</div>
+
+<!-- ═══════ DASHBOARD ═══════ -->
+<div class="dashboard" id="dashboard">
+    <div class="dash-header">
+        <h1><i class="fas fa-chart-line"></i> Portfolio Dashboard</h1>
+        <div class="dash-actions">
+            <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Site</a>
+            <button class="btn-logout" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+        </div>
+    </div>
+
+    <div class="dash-container">
+        <!-- Stats cards -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-icon icon-blue"><i class="fas fa-eye"></i></div>
+                <div class="stat-value" id="statPageViews">—</div>
+                <div class="stat-label">Page Views</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-green"><i class="fas fa-download"></i></div>
+                <div class="stat-value" id="statDownloads">—</div>
+                <div class="stat-label">Resume Downloads</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-amber"><i class="fas fa-envelope"></i></div>
+                <div class="stat-value" id="statMessages">—</div>
+                <div class="stat-label">Messages</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-pink"><i class="fas fa-robot"></i></div>
+                <div class="stat-value" id="statChats">—</div>
+                <div class="stat-label">Chat Sessions</div>
+            </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="dash-section">
+            <div class="dash-section-header">
+                <h2><i class="fas fa-inbox"></i> Messages</h2>
+                <button class="refresh-btn" onclick="Admin.loadMessages()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            <div id="messagesBody">
+                <div class="loading"><i class="fas fa-spinner"></i> Loading…</div>
+            </div>
+        </div>
+
+        <!-- Page Views -->
+        <div class="dash-section">
+            <div class="dash-section-header">
+                <h2><i class="fas fa-chart-bar"></i> Recent Page Views</h2>
+                <button class="refresh-btn" onclick="Admin.loadPageViews()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            <div id="pageViewsBody">
+                <div class="loading"><i class="fas fa-spinner"></i> Loading…</div>
+            </div>
+        </div>
+
+        <!-- Section Engagement -->
+        <div class="dash-section">
+            <div class="dash-section-header">
+                <h2><i class="fas fa-layer-group"></i> Section Engagement</h2>
+                <button class="refresh-btn" onclick="Admin.loadSectionViews()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            <div id="sectionViewsBody">
+                <div class="loading"><i class="fas fa-spinner"></i> Loading…</div>
+            </div>
+        </div>
+
+        <!-- Chat Logs -->
+        <div class="dash-section">
+            <div class="dash-section-header">
+                <h2><i class="fas fa-comments"></i> Chat Logs</h2>
+                <button class="refresh-btn" onclick="Admin.loadChatLogs()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            <div id="chatLogsBody">
+                <div class="loading"><i class="fas fa-spinner"></i> Loading…</div>
+            </div>
+        </div>
+
+        <!-- Blog Stats -->
+        <div class="dash-section">
+            <div class="dash-section-header">
+                <h2><i class="fas fa-blog"></i> Blog Engagement</h2>
+                <button class="refresh-btn" onclick="Admin.loadBlogStats()"><i class="fas fa-sync-alt"></i> Refresh</button>
+            </div>
+            <div id="blogStatsBody">
+                <div class="loading"><i class="fas fa-spinner"></i> Loading…</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* =============================================
+   ADMIN DASHBOARD — Supabase Auth + Data Display
+   ============================================= */
+const Admin = (() => {
+    const SUPABASE_URL  = 'https://dhjjjymjqimedxaoaayq.supabase.co';
+    const SUPABASE_ANON = 'sb_publishable_SgWVKje--EKn7-1oBaeaPw_rOc2ewmn';
+
+    let sb = null;
+
+    // ── Init Supabase ──
+    const initSupabase = () => {
+        sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+    };
+
+    // ── Auth ──
+    const signIn = async () => {
+        const email = document.getElementById('authEmail').value.trim();
+        const password = document.getElementById('authPassword').value;
+        const errEl = document.getElementById('authError');
+        errEl.style.display = 'none';
+
+        if (!email || !password) {
+            errEl.textContent = 'Please enter email and password.';
+            errEl.style.display = 'block';
+            return;
+        }
+
+        try {
+            const { data, error } = await sb.auth.signInWithPassword({ email, password });
+            if (error) throw error;
+            showDashboard();
+        } catch (e) {
+            errEl.textContent = e.message || 'Authentication failed.';
+            errEl.style.display = 'block';
+        }
+    };
+
+    const signOut = async () => {
+        await sb.auth.signOut();
+        document.getElementById('dashboard').classList.remove('visible');
+        document.getElementById('authGate').style.display = 'flex';
+    };
+
+    const checkSession = async () => {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) showDashboard();
+    };
+
+    const showDashboard = () => {
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('dashboard').classList.add('visible');
+        loadAll();
+    };
+
+    // ── Utilities ──
+    const timeAgo = (dateStr) => {
+        const diff = Date.now() - new Date(dateStr).getTime();
+        const mins = Math.floor(diff / 60000);
+        if (mins < 1) return 'just now';
+        if (mins < 60) return `${mins}m ago`;
+        const hrs = Math.floor(mins / 60);
+        if (hrs < 24) return `${hrs}h ago`;
+        const days = Math.floor(hrs / 24);
+        return `${days}d ago`;
+    };
+
+    const escapeHtml = (str) => {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    };
+
+    // ── Load Stats ──
+    const loadStats = async () => {
+        try {
+            // Page views count
+            const { count: pvCount } = await sb.from('page_views').select('*', { count: 'exact', head: true });
+            document.getElementById('statPageViews').textContent = pvCount ?? 0;
+
+            // Resume downloads
+            const { data: counter } = await sb.from('counters').select('value').eq('name', 'resume_downloads').maybeSingle();
+            document.getElementById('statDownloads').textContent = counter?.value ?? 0;
+
+            // Messages count
+            const { count: msgCount } = await sb.from('messages').select('*', { count: 'exact', head: true });
+            document.getElementById('statMessages').textContent = msgCount ?? 0;
+
+            // Unique chat sessions
+            const { data: chatSessions } = await sb.from('chat_logs').select('session_id');
+            const uniqueSessions = new Set((chatSessions || []).map(c => c.session_id));
+            document.getElementById('statChats').textContent = uniqueSessions.size;
+        } catch (e) {
+            console.warn('Stats error', e);
+        }
+    };
+
+    // ── Messages ──
+    const loadMessages = async () => {
+        const body = document.getElementById('messagesBody');
+        body.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Loading…</div>';
+
+        try {
+            const { data, error } = await sb.from('messages').select('*').order('created_at', { ascending: false }).limit(50);
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                body.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i>No messages yet</div>';
+                return;
+            }
+
+            body.innerHTML = `
+                <table class="dash-table">
+                    <thead><tr><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Time</th></tr></thead>
+                    <tbody>
+                        ${data.map(m => `
+                            <tr>
+                                <td><strong>${escapeHtml(m.name || '')}</strong></td>
+                                <td class="mono">${escapeHtml(m.email || '')}</td>
+                                <td>${escapeHtml(m.subject || '—')}</td>
+                                <td class="truncate">${escapeHtml(m.message || '')}</td>
+                                <td style="white-space:nowrap">${timeAgo(m.created_at)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (e) {
+            body.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Error loading messages</div>`;
+        }
+    };
+
+    // ── Page Views ──
+    const loadPageViews = async () => {
+        const body = document.getElementById('pageViewsBody');
+        body.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Loading…</div>';
+
+        try {
+            const { data, error } = await sb.from('page_views').select('*').order('created_at', { ascending: false }).limit(50);
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                body.innerHTML = '<div class="empty-state"><i class="fas fa-chart-bar"></i>No page views yet</div>';
+                return;
+            }
+
+            body.innerHTML = `
+                <table class="dash-table">
+                    <thead><tr><th>Page</th><th>Referrer</th><th>Screen</th><th>Fingerprint</th><th>Time</th></tr></thead>
+                    <tbody>
+                        ${data.map(v => `
+                            <tr>
+                                <td><span class="badge badge-blue">${escapeHtml(v.page || '/')}</span></td>
+                                <td class="truncate">${escapeHtml(v.referrer || 'Direct')}</td>
+                                <td class="mono">${v.screen_w || '?'}×${v.screen_h || '?'}</td>
+                                <td class="mono">${(v.fingerprint || '').slice(0, 8)}…</td>
+                                <td style="white-space:nowrap">${timeAgo(v.created_at)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (e) {
+            body.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Error loading page views</div>`;
+        }
+    };
+
+    // ── Section Engagement ──
+    const loadSectionViews = async () => {
+        const body = document.getElementById('sectionViewsBody');
+        body.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Loading…</div>';
+
+        try {
+            const { data, error } = await sb.from('section_views').select('section_id');
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                body.innerHTML = '<div class="empty-state"><i class="fas fa-layer-group"></i>No section data yet</div>';
+                return;
+            }
+
+            // Aggregate by section
+            const counts = {};
+            data.forEach(r => {
+                const s = r.section_id || 'unknown';
+                counts[s] = (counts[s] || 0) + 1;
+            });
+
+            const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+
+            body.innerHTML = `
+                <table class="dash-table">
+                    <thead><tr><th>Section</th><th>Views</th><th>Share</th></tr></thead>
+                    <tbody>
+                        ${sorted.map(([section, count]) => {
+                            const pct = ((count / data.length) * 100).toFixed(1);
+                            return `
+                                <tr>
+                                    <td><span class="badge badge-blue">${escapeHtml(section)}</span></td>
+                                    <td><strong>${count}</strong></td>
+                                    <td>
+                                        <div style="background:var(--bg);border-radius:4px;height:8px;width:120px;overflow:hidden;">
+                                            <div style="background:var(--accent);height:100%;width:${pct}%;border-radius:4px;"></div>
+                                        </div>
+                                        <span style="font-size:0.78rem;color:var(--text-muted);margin-left:0.5rem;">${pct}%</span>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (e) {
+            body.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Error loading section data</div>`;
+        }
+    };
+
+    // ── Chat Logs ──
+    const loadChatLogs = async () => {
+        const body = document.getElementById('chatLogsBody');
+        body.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Loading…</div>';
+
+        try {
+            const { data, error } = await sb.from('chat_logs').select('*').order('created_at', { ascending: false }).limit(100);
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                body.innerHTML = '<div class="empty-state"><i class="fas fa-comments"></i>No chat logs yet</div>';
+                return;
+            }
+
+            body.innerHTML = `
+                <table class="dash-table">
+                    <thead><tr><th>Session</th><th>Role</th><th>Message</th><th>Time</th></tr></thead>
+                    <tbody>
+                        ${data.map(c => `
+                            <tr>
+                                <td class="mono">${(c.session_id || '').slice(0, 8)}…</td>
+                                <td><span class="badge ${c.role === 'user' ? 'badge-blue' : 'badge-green'}">${c.role || '?'}</span></td>
+                                <td class="truncate">${escapeHtml((c.message || '').slice(0, 200))}</td>
+                                <td style="white-space:nowrap">${timeAgo(c.created_at)}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (e) {
+            body.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Error loading chat logs</div>`;
+        }
+    };
+
+    // ── Blog Stats ──
+    const loadBlogStats = async () => {
+        const body = document.getElementById('blogStatsBody');
+        body.innerHTML = '<div class="loading"><i class="fas fa-spinner"></i> Loading…</div>';
+
+        try {
+            const { data, error } = await sb.from('blog_stats').select('*').order('reads', { ascending: false });
+            if (error) throw error;
+
+            if (!data || data.length === 0) {
+                body.innerHTML = '<div class="empty-state"><i class="fas fa-blog"></i>No blog data yet</div>';
+                return;
+            }
+
+            body.innerHTML = `
+                <table class="dash-table">
+                    <thead><tr><th>Post</th><th>Reads</th><th>Likes</th></tr></thead>
+                    <tbody>
+                        ${data.map(b => `
+                            <tr>
+                                <td>${escapeHtml(b.post_slug || '')}</td>
+                                <td><strong>${b.reads || 0}</strong> <i class="fas fa-eye" style="color:var(--text-muted);font-size:0.75rem"></i></td>
+                                <td><strong>${b.likes || 0}</strong> <i class="fas fa-heart" style="color:var(--danger);font-size:0.75rem"></i></td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        } catch (e) {
+            body.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i>Error loading blog stats</div>`;
+        }
+    };
+
+    // ── Load All ──
+    const loadAll = () => {
+        loadStats();
+        loadMessages();
+        loadPageViews();
+        loadSectionViews();
+        loadChatLogs();
+        loadBlogStats();
+    };
+
+    // ── Init ──
+    const init = () => {
+        initSupabase();
+
+        // Auth event listeners
+        document.getElementById('authBtn').addEventListener('click', signIn);
+        document.getElementById('authPassword').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') signIn();
+        });
+        document.getElementById('logoutBtn').addEventListener('click', signOut);
+
+        // Check existing session
+        checkSession();
+    };
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    return {
+        loadMessages,
+        loadPageViews,
+        loadSectionViews,
+        loadChatLogs,
+        loadBlogStats,
+        loadAll
+    };
+})();
+</script>
+
+</body>
+</html>

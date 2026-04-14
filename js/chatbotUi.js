@@ -12,6 +12,9 @@ const chatInputRow = document.getElementById('chatInputRow');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 
+// Unique session ID for chat logging
+const _chatSessionId = 'chat-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+
 // Guard: if any critical element is missing, bail out safely
 if (!chatbotToggle || !chatbotWindow || !chatbotClose || !chatbotMessages || !chatInput || !chatSend) {
     console.warn('ChatbotUI: Missing DOM elements, skipping init.');
@@ -40,6 +43,10 @@ async function sendMessage() {
     if (!text) return;
 
     addMessage('user', text);
+    // Log to Supabase (non-blocking)
+    if (window.SupabaseBackend && window.SupabaseBackend.isReady()) {
+        window.SupabaseBackend.logChatMessage('user', text, _chatSessionId).catch(() => {});
+    }
     chatInput.value = '';
     chatInput.disabled = true;
     chatSend.disabled = true;
@@ -64,6 +71,9 @@ async function sendMessage() {
         const reply = await window.CHATBOT_API.callGeminiAPI(text);
         removeTyping(typingId);
         addMessage('bot', reply);
+        if (window.SupabaseBackend && window.SupabaseBackend.isReady()) {
+            window.SupabaseBackend.logChatMessage('bot', reply, _chatSessionId).catch(() => {});
+        }
     } catch (error) {
         removeTyping(typingId);
 

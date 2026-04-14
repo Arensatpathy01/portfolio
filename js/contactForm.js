@@ -94,6 +94,11 @@ if (queryForm) {
             result = { success: true, message: 'Your mail client has been opened. Send the email to complete your query!', fallback: true };
         }
 
+        // Also save to Supabase for persistence (runs in background, non-blocking)
+        if (window.SupabaseBackend && window.SupabaseBackend.isReady()) {
+            window.SupabaseBackend.saveMessage(formData).catch(() => {});
+        }
+
         lastSubmitTime = Date.now();
 
         // Show result

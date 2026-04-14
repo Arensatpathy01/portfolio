@@ -1,0 +1,163 @@
+/* =============================================
+   RESUME VIEWER — Modal overlay for PDF preview
+   ============================================= */
+
+/* ── Modal container ── */
+.resume-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.resume-modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ── Backdrop ── */
+.resume-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* ── Content ── */
+.resume-modal-content {
+    position: relative;
+    width: 90vw;
+    max-width: 900px;
+    height: 88vh;
+    background: var(--bg-secondary, #12151c);
+    border: 1px solid rgba(96, 165, 250, 0.15);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 80px rgba(96, 165, 250, 0.08);
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.resume-modal.active .resume-modal-content {
+    transform: scale(1) translateY(0);
+}
+
+/* ── Header ── */
+.resume-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+    background: var(--bg-tertiary, #181c26);
+    flex-shrink: 0;
+}
+
+.resume-modal-header h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary, #f1f5f9);
+}
+
+.resume-modal-header h3 i {
+    color: var(--accent, #60a5fa);
+    margin-right: 0.5rem;
+}
+
+.resume-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.resume-modal-download {
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+    text-decoration: none;
+}
+
+.resume-modal-close {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary, #94a3b8);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.resume-modal-close:hover {
+    background: rgba(248, 113, 113, 0.15);
+    border-color: rgba(248, 113, 113, 0.3);
+    color: #f87171;
+}
+
+/* ── Body / Iframe ── */
+.resume-modal-body {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+}
+
+.resume-modal-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #fff;
+}
+
+/* ── Fallback ── */
+.resume-modal-fallback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    height: 100%;
+    padding: 2rem;
+    text-align: center;
+    color: var(--text-secondary, #94a3b8);
+}
+
+.resume-modal-fallback p {
+    font-size: 1rem;
+    max-width: 400px;
+}
+
+/* ── View button ── */
+.resume-view-btn {
+    text-decoration: none;
+    margin-left: 0.5rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .resume-modal-content {
+        width: 96vw;
+        height: 92vh;
+        border-radius: 10px;
+    }
+
+    .resume-modal-header {
+        padding: 0.75rem 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .resume-modal-header h3 {
+        font-size: 0.85rem;
+    }
+}
